@@ -1,0 +1,22 @@
+{
+    "geometry": [
+        "area"
+    ],
+    "fields": [
+        "geom_checked",
+        "parcel_type",
+        "type_checked",
+        "parcel_num",
+        "parcel_num_checked",
+        "parcel_num_link",
+        "parcel_num_link_checked"
+    ],
+    "moreFields": [
+    ],
+    "tags": {
+        "parcel_type": "*"
+    },
+    "terms": [
+    ],
+    "name": "Parcel"
+}

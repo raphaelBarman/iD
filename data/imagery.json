@@ -1,4 +1,551 @@
 [
+	{
+    "id": "fg_1",
+    "name": "Napoleonic cadaster 1808 Folio 1",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/1/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3163991, 45.4502688],
+	[12.3163991, 45.4453413],
+	[12.3250453, 45.4453413],
+	[12.3250453, 45.4502688],
+	[12.3163991, 45.4502688]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 1",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_2",
+    "name": "Napoleonic cadaster 1808 Folio 2",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/2/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3248160, 45.4504655],
+	[12.3248160, 45.4454660],
+	[12.3332669, 45.4454660],
+	[12.3332669, 45.4504655],
+	[12.3248160, 45.4504655]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 2",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_3",
+    "name": "Napoleonic cadaster 1808 Folio 3",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/3/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3330928, 45.4477331],
+	[12.3330928, 45.4457210],
+	[12.3360996, 45.4457210],
+	[12.3360996, 45.4477331],
+	[12.3330928, 45.4477331]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 3",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_4",
+    "name": "Napoleonic cadaster 1808 Folio 4",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/4/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3157286, 45.4413468],
+	[12.3157286, 45.4405602],
+	[12.3169390, 45.4405602],
+	[12.3169390, 45.4413468],
+	[12.3157286, 45.4413468]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 4",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_5",
+    "name": "Napoleonic cadaster 1808 Folio 5",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/5/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3167708, 45.4456203],
+	[12.3167708, 45.4405825],
+	[12.3252767, 45.4405825],
+	[12.3252767, 45.4456203],
+	[12.3167708, 45.4456203]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 5",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_6",
+    "name": "Napoleonic cadaster 1808 Folio 6",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/6/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3249809, 45.4457289],
+	[12.3249809, 45.4408038],
+	[12.3334544, 45.4408038],
+	[12.3334544, 45.4457289],
+	[12.3249809, 45.4457289]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 6",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_7",
+    "name": "Napoleonic cadaster 1808 Folio 7",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/7/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3331501, 45.4459852],
+	[12.3331501, 45.4409547],
+	[12.3417734, 45.4409547],
+	[12.3417734, 45.4459852],
+	[12.3331501, 45.4459852]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 7",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_8",
+    "name": "Napoleonic cadaster 1808 Folio 8",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/8/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3416633, 45.4425305],
+	[12.3416633, 45.4411555],
+	[12.3440009, 45.4411555],
+	[12.3440009, 45.4425305],
+	[12.3416633, 45.4425305]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 8",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_9",
+    "name": "Napoleonic cadaster 1808 Folio 9",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/9/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3152331, 45.4407893],
+	[12.3152331, 45.4355614],
+	[12.3173012, 45.4355614],
+	[12.3173012, 45.4407893],
+	[12.3152331, 45.4407893]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 9",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_10",
+    "name": "Napoleonic cadaster 1808 Folio 10",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/10/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3169985, 45.4408676],
+	[12.3169985, 45.4357929],
+	[12.3255097, 45.4357929],
+	[12.3255097, 45.4408676],
+	[12.3169985, 45.4408676]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 10",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_11",
+    "name": "Napoleonic cadaster 1808 Folio 11",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/11/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3251936, 45.4410362],
+	[12.3251936, 45.4359399],
+	[12.3337130, 45.4359399],
+	[12.3337130, 45.4410362],
+	[12.3251936, 45.4410362]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 11",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_12",
+    "name": "Napoleonic cadaster 1808 Folio 12",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/12/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3334523, 45.4412733],
+	[12.3334523, 45.4360672],
+	[12.3419810, 45.4360672],
+	[12.3419810, 45.4412733],
+	[12.3334523, 45.4412733]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 12",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_13",
+    "name": "Napoleonic cadaster 1808 Folio 13",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/13/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3417161, 45.4414108],
+	[12.3417161, 45.4362396],
+	[12.3502320, 45.4362396],
+	[12.3502320, 45.4414108],
+	[12.3417161, 45.4414108]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 13",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_14",
+    "name": "Napoleonic cadaster 1808 Folio 14",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/14/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3498355, 45.4392541],
+	[12.3498355, 45.4363947],
+	[12.3588149, 45.4363947],
+	[12.3588149, 45.4392541],
+	[12.3498355, 45.4392541]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 14",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_16",
+    "name": "Napoleonic cadaster 1808 Folio 16",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/16/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3090903, 45.4358728],
+	[12.3090903, 45.4308021],
+	[12.3176817, 45.4308021],
+	[12.3176817, 45.4358728],
+	[12.3090903, 45.4358728]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 16",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_17",
+    "name": "Napoleonic cadaster 1808 Folio 17",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/17/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3171985, 45.4361051],
+	[12.3171985, 45.4309821],
+	[12.3258383, 45.4309821],
+	[12.3258383, 45.4361051],
+	[12.3171985, 45.4361051]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 17",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_18",
+    "name": "Napoleonic cadaster 1808 Folio 18",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/18/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3254572, 45.4363238],
+	[12.3254572, 45.4313440],
+	[12.3339691, 45.4313440],
+	[12.3339691, 45.4363238],
+	[12.3254572, 45.4363238]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 18",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_19",
+    "name": "Napoleonic cadaster 1808 Folio 19",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/19/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3336146, 45.4364939],
+	[12.3336146, 45.4314306],
+	[12.3421852, 45.4314306],
+	[12.3421852, 45.4364939],
+	[12.3336146, 45.4364939]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 19",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_20",
+    "name": "Napoleonic cadaster 1808 Folio 20",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/20/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3418841, 45.4366465],
+	[12.3418841, 45.4319693],
+	[12.3504707, 45.4319693],
+	[12.3504707, 45.4366465],
+	[12.3418841, 45.4366465]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 20",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_21",
+    "name": "Napoleonic cadaster 1808 Folio 21",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/21/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3501421, 45.4368427],
+	[12.3501421, 45.4317567],
+	[12.3588798, 45.4317567],
+	[12.3588798, 45.4368427],
+	[12.3501421, 45.4368427]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 21",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_22",
+    "name": "Napoleonic cadaster 1808 Folio 22",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/22/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3585717, 45.4368399],
+	[12.3585717, 45.4320841],
+	[12.3618500, 45.4320841],
+	[12.3618500, 45.4368399],
+	[12.3585717, 45.4368399]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 22",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_23",
+    "name": "Napoleonic cadaster 1808 Folio 23",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/23/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3186748, 45.4314452],
+	[12.3186748, 45.4286052],
+	[12.3258982, 45.4286052],
+	[12.3258982, 45.4314452],
+	[12.3186748, 45.4314452]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 23",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_24",
+    "name": "Napoleonic cadaster 1808 Folio 24",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/24/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3257625, 45.4315906],
+	[12.3257625, 45.4282224],
+	[12.3342175, 45.4282224],
+	[12.3342175, 45.4315906],
+	[12.3257625, 45.4315906]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 24",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_25",
+    "name": "Napoleonic cadaster 1808 Folio 25",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/25/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3339603, 45.4317396],
+	[12.3339603, 45.4289734],
+	[12.3381276, 45.4289734],
+	[12.3381276, 45.4317396],
+	[12.3339603, 45.4317396]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 25",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_26",
+    "name": "Napoleonic cadaster 1808 Folio 26",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/26/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3504432, 45.4320348],
+	[12.3504432, 45.4269803],
+	[12.3590254, 45.4269803],
+	[12.3590254, 45.4320348],
+	[12.3504432, 45.4320348]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 26",
+    "best": true,
+    "description": ""
+  },
+{
+    "id": "fg_27",
+    "name": "Napoleonic cadaster 1808 Folio 27",
+    "type": "tms",
+    "template": "http://0.0.0.0:8000/27/{z}/{x}/{-y}.png",
+    "endDate": "2018-01-01T00:00:00.000Z",
+    "startDate": "2018-01-01T00:00:00.000Z",
+    "zoomExtent": [9, 20],
+    "polygon": [
+	[
+	[12.3578308, 45.4323659],
+	[12.3578308, 45.4269344],
+	[12.3603057, 45.4269344],
+	[12.3603057, 45.4323659],
+	[12.3578308, 45.4323659]
+    ]],
+    "terms_url": "",
+    "terms_text": "napoleon cadaster folio 27",
+    "best": true,
+    "description": ""
+  },
+
   {
     "id": "South_Africa-CapeTown-Aerial-2018",
     "name": "2018 Aerial Imagery from the City of Cape Town",

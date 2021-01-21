@@ -1003,6 +1003,9 @@ en:
       generator/type:
         # 'generator:type=*'
         label: Type
+      geom_checked:
+        # geom_checked=*
+        label: Geometry checked?
       geyser/height:
         # 'geyser:height=*'
         label: Eruption Height
@@ -1679,6 +1682,34 @@ en:
         label: Par
         # par field placeholder
         placeholder: '3, 4, 5...'
+      parcel_num:
+        # parcel_num=*
+        label: Parcel number (written)
+      parcel_num_checked:
+        # parcel_num_checked=*
+        label: Parcel number (written) checked?
+      parcel_num_link:
+        # parcel_num_link=*
+        label: Parcel number link
+      parcel_num_link_checked:
+        # parcel_num_link_checked=*
+        label: Parcel number link checked?
+      parcel_type:
+        # parcel_type=*
+        label: Parcel type
+        options:
+          # parcel_type=background
+          background: Background
+          # parcel_type=building
+          building: Building
+          # parcel_type=courtyard
+          courtyard: Courtyard
+          # parcel_type=sottoportico
+          sottoportico: Sottoportico
+          # parcel_type=street
+          street: Street
+          # parcel_type=water
+          water: Water
       park_ride:
         # park_ride=*
         label: Park and Ride
@@ -2730,6 +2761,9 @@ en:
       tunnel_combo:
         # tunnel=*
         label: Type
+      type_checked:
+        # type_checked=*
+        label: Parcel type checked?
       usage_rail:
         # usage=*
         label: Usage Type
@@ -5890,6 +5924,10 @@ en:
         name: Orchard
         # 'terms: fruit'
         terms: '<translate with synonyms or related terms for ''Orchard'', separated by commas>'
+      landuse/parcel:
+        # parcel_type=*
+        name: Parcel
+        terms: '<translate with synonyms or related terms for ''Parcel'', separated by commas>'
       landuse/plant_nursery:
         # landuse=plant_nursery
         name: Plant Nursery

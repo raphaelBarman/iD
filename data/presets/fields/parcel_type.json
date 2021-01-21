@@ -1,0 +1,17 @@
+{
+    "key": "parcel_type",
+    "type": "combo",
+    "label": "Parcel type",
+    "strings": {
+        "options": {
+            "building": "Building",
+            "courtyard": "Courtyard",
+            "street": "Street",
+            "sottoportico": "Sottoportico",
+            "water": "Water",
+            "background": "Background"
+        }
+    },
+    "terms": [
+    ]
+}
