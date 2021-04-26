@@ -2,10 +2,6 @@
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-	function getDefaultExportFromCjs (x) {
-		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-	}
-
 	function createCommonjsModule(fn, basedir, module) {
 		return module = {
 			path: basedir,
@@ -42,7 +38,7 @@
 	  }
 	};
 
-	// Thank's IE8 for his funny defineProperty
+	// Detect IE8's incomplete defineProperty implementation
 	var descriptors = !fails(function () {
 	  return Object.defineProperty({}, 1, { get: function () { return 7; } })[1] != 7;
 	});
@@ -54,7 +50,7 @@
 	var NASHORN_BUG = getOwnPropertyDescriptor && !nativePropertyIsEnumerable.call({ 1: 2 }, 1);
 
 	// `Object.prototype.propertyIsEnumerable` method implementation
-	// https://tc39.github.io/ecma262/#sec-object.prototype.propertyisenumerable
+	// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
 	var f = NASHORN_BUG ? function propertyIsEnumerable(V) {
 	  var descriptor = getOwnPropertyDescriptor(this, V);
 	  return !!descriptor && descriptor.enumerable;
@@ -91,7 +87,7 @@
 	} : Object;
 
 	// `RequireObjectCoercible` abstract operation
-	// https://tc39.github.io/ecma262/#sec-requireobjectcoercible
+	// https://tc39.es/ecma262/#sec-requireobjectcoercible
 	var requireObjectCoercible = function (it) {
 	  if (it == undefined) throw TypeError("Can't call method on " + it);
 	  return it;
@@ -110,7 +106,7 @@
 	};
 
 	// `ToPrimitive` abstract operation
-	// https://tc39.github.io/ecma262/#sec-toprimitive
+	// https://tc39.es/ecma262/#sec-toprimitive
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	var toPrimitive = function (input, PREFERRED_STRING) {
@@ -146,7 +142,7 @@
 	var nativeGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
 	// `Object.getOwnPropertyDescriptor` method
-	// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
+	// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
 	var f$1 = descriptors ? nativeGetOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
 	  O = toIndexedObject(O);
 	  P = toPrimitive(P, true);
@@ -169,7 +165,7 @@
 	var nativeDefineProperty = Object.defineProperty;
 
 	// `Object.defineProperty` method
-	// https://tc39.github.io/ecma262/#sec-object.defineproperty
+	// https://tc39.es/ecma262/#sec-object.defineproperty
 	var f$2 = descriptors ? nativeDefineProperty : function defineProperty(O, P, Attributes) {
 	  anObject(O);
 	  P = toPrimitive(P, true);
@@ -227,9 +223,9 @@
 	(module.exports = function (key, value) {
 	  return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
 	})('versions', []).push({
-	  version: '3.7.0',
+	  version: '3.8.2',
 	  mode:  'global',
-	  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
+	  copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
 	});
 	});
 
@@ -355,7 +351,7 @@
 	var floor = Math.floor;
 
 	// `ToInteger` abstract operation
-	// https://tc39.github.io/ecma262/#sec-tointeger
+	// https://tc39.es/ecma262/#sec-tointeger
 	var toInteger = function (argument) {
 	  return isNaN(argument = +argument) ? 0 : (argument > 0 ? floor : ceil)(argument);
 	};
@@ -363,7 +359,7 @@
 	var min = Math.min;
 
 	// `ToLength` abstract operation
-	// https://tc39.github.io/ecma262/#sec-tolength
+	// https://tc39.es/ecma262/#sec-tolength
 	var toLength = function (argument) {
 	  return argument > 0 ? min(toInteger(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
 	};
@@ -401,10 +397,10 @@
 
 	var arrayIncludes = {
 	  // `Array.prototype.includes` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
+	  // https://tc39.es/ecma262/#sec-array.prototype.includes
 	  includes: createMethod(true),
 	  // `Array.prototype.indexOf` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+	  // https://tc39.es/ecma262/#sec-array.prototype.indexof
 	  indexOf: createMethod(false)
 	};
 
@@ -438,7 +434,7 @@
 	var hiddenKeys$1 = enumBugKeys.concat('length', 'prototype');
 
 	// `Object.getOwnPropertyNames` method
-	// https://tc39.github.io/ecma262/#sec-object.getownpropertynames
+	// https://tc39.es/ecma262/#sec-object.getownpropertynames
 	var f$3 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 	  return objectKeysInternal(O, hiddenKeys$1);
 	};
@@ -545,7 +541,7 @@
 	};
 
 	// `Date.now` method
-	// https://tc39.github.io/ecma262/#sec-date.now
+	// https://tc39.es/ecma262/#sec-date.now
 	_export({ target: 'Date', stat: true }, {
 	  now: function now() {
 	    return new Date().getTime();
@@ -559,7 +555,7 @@
 	var getTime = DatePrototype.getTime;
 
 	// `Date.prototype.toString` method
-	// https://tc39.github.io/ecma262/#sec-date.prototype.tostring
+	// https://tc39.es/ecma262/#sec-date.prototype.tostring
 	if (new Date(NaN) + '' != INVALID_DATE) {
 	  redefine(DatePrototype, TO_STRING, function toString() {
 	    var value = getTime.call(this);
@@ -581,25 +577,25 @@
 	  && typeof Symbol.iterator == 'symbol';
 
 	// `IsArray` abstract operation
-	// https://tc39.github.io/ecma262/#sec-isarray
+	// https://tc39.es/ecma262/#sec-isarray
 	var isArray = Array.isArray || function isArray(arg) {
 	  return classofRaw(arg) == 'Array';
 	};
 
 	// `ToObject` abstract operation
-	// https://tc39.github.io/ecma262/#sec-toobject
+	// https://tc39.es/ecma262/#sec-toobject
 	var toObject = function (argument) {
 	  return Object(requireObjectCoercible(argument));
 	};
 
 	// `Object.keys` method
-	// https://tc39.github.io/ecma262/#sec-object.keys
+	// https://tc39.es/ecma262/#sec-object.keys
 	var objectKeys = Object.keys || function keys(O) {
 	  return objectKeysInternal(O, enumBugKeys);
 	};
 
 	// `Object.defineProperties` method
-	// https://tc39.github.io/ecma262/#sec-object.defineproperties
+	// https://tc39.es/ecma262/#sec-object.defineproperties
 	var objectDefineProperties = descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
 	  anObject(O);
 	  var keys = objectKeys(Properties);
@@ -670,7 +666,7 @@
 	hiddenKeys[IE_PROTO] = true;
 
 	// `Object.create` method
-	// https://tc39.github.io/ecma262/#sec-object.create
+	// https://tc39.es/ecma262/#sec-object.create
 	var objectCreate = Object.create || function create(O, Properties) {
 	  var result;
 	  if (O !== null) {
@@ -779,7 +775,7 @@
 	var SPECIES = wellKnownSymbol('species');
 
 	// `ArraySpeciesCreate` abstract operation
-	// https://tc39.github.io/ecma262/#sec-arrayspeciescreate
+	// https://tc39.es/ecma262/#sec-arrayspeciescreate
 	var arraySpeciesCreate = function (originalArray, length) {
 	  var C;
 	  if (isArray(originalArray)) {
@@ -795,13 +791,14 @@
 
 	var push = [].push;
 
-	// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
+	// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
 	var createMethod$1 = function (TYPE) {
 	  var IS_MAP = TYPE == 1;
 	  var IS_FILTER = TYPE == 2;
 	  var IS_SOME = TYPE == 3;
 	  var IS_EVERY = TYPE == 4;
 	  var IS_FIND_INDEX = TYPE == 6;
+	  var IS_FILTER_OUT = TYPE == 7;
 	  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
 	  return function ($this, callbackfn, that, specificCreate) {
 	    var O = toObject($this);
@@ -810,7 +807,7 @@
 	    var length = toLength(self.length);
 	    var index = 0;
 	    var create = specificCreate || arraySpeciesCreate;
-	    var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+	    var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_OUT ? create($this, 0) : undefined;
 	    var value, result;
 	    for (;length > index; index++) if (NO_HOLES || index in self) {
 	      value = self[index];
@@ -822,7 +819,10 @@
 	          case 5: return value;             // find
 	          case 6: return index;             // findIndex
 	          case 2: push.call(target, value); // filter
-	        } else if (IS_EVERY) return false;  // every
+	        } else switch (TYPE) {
+	          case 4: return false;             // every
+	          case 7: push.call(target, value); // filterOut
+	        }
 	      }
 	    }
 	    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
@@ -831,26 +831,29 @@
 
 	var arrayIteration = {
 	  // `Array.prototype.forEach` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+	  // https://tc39.es/ecma262/#sec-array.prototype.foreach
 	  forEach: createMethod$1(0),
 	  // `Array.prototype.map` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.map
+	  // https://tc39.es/ecma262/#sec-array.prototype.map
 	  map: createMethod$1(1),
 	  // `Array.prototype.filter` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+	  // https://tc39.es/ecma262/#sec-array.prototype.filter
 	  filter: createMethod$1(2),
 	  // `Array.prototype.some` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.some
+	  // https://tc39.es/ecma262/#sec-array.prototype.some
 	  some: createMethod$1(3),
 	  // `Array.prototype.every` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.every
+	  // https://tc39.es/ecma262/#sec-array.prototype.every
 	  every: createMethod$1(4),
 	  // `Array.prototype.find` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.find
+	  // https://tc39.es/ecma262/#sec-array.prototype.find
 	  find: createMethod$1(5),
 	  // `Array.prototype.findIndex` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-	  findIndex: createMethod$1(6)
+	  // https://tc39.es/ecma262/#sec-array.prototype.findIndex
+	  findIndex: createMethod$1(6),
+	  // `Array.prototype.filterOut` method
+	  // https://github.com/tc39/proposal-array-filtering
+	  filterOut: createMethod$1(7)
 	};
 
 	var $forEach = arrayIteration.forEach;
@@ -978,7 +981,7 @@
 	};
 
 	// `Symbol` constructor
-	// https://tc39.github.io/ecma262/#sec-symbol-constructor
+	// https://tc39.es/ecma262/#sec-symbol-constructor
 	if (!nativeSymbol) {
 	  $Symbol = function Symbol() {
 	    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor');
@@ -1035,7 +1038,7 @@
 
 	_export({ target: SYMBOL, stat: true, forced: !nativeSymbol }, {
 	  // `Symbol.for` method
-	  // https://tc39.github.io/ecma262/#sec-symbol.for
+	  // https://tc39.es/ecma262/#sec-symbol.for
 	  'for': function (key) {
 	    var string = String(key);
 	    if (has(StringToSymbolRegistry, string)) return StringToSymbolRegistry[string];
@@ -1045,7 +1048,7 @@
 	    return symbol;
 	  },
 	  // `Symbol.keyFor` method
-	  // https://tc39.github.io/ecma262/#sec-symbol.keyfor
+	  // https://tc39.es/ecma262/#sec-symbol.keyfor
 	  keyFor: function keyFor(sym) {
 	    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol');
 	    if (has(SymbolToStringRegistry, sym)) return SymbolToStringRegistry[sym];
@@ -1056,25 +1059,25 @@
 
 	_export({ target: 'Object', stat: true, forced: !nativeSymbol, sham: !descriptors }, {
 	  // `Object.create` method
-	  // https://tc39.github.io/ecma262/#sec-object.create
+	  // https://tc39.es/ecma262/#sec-object.create
 	  create: $create,
 	  // `Object.defineProperty` method
-	  // https://tc39.github.io/ecma262/#sec-object.defineproperty
+	  // https://tc39.es/ecma262/#sec-object.defineproperty
 	  defineProperty: $defineProperty,
 	  // `Object.defineProperties` method
-	  // https://tc39.github.io/ecma262/#sec-object.defineproperties
+	  // https://tc39.es/ecma262/#sec-object.defineproperties
 	  defineProperties: $defineProperties,
 	  // `Object.getOwnPropertyDescriptor` method
-	  // https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptors
+	  // https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
 	  getOwnPropertyDescriptor: $getOwnPropertyDescriptor
 	});
 
 	_export({ target: 'Object', stat: true, forced: !nativeSymbol }, {
 	  // `Object.getOwnPropertyNames` method
-	  // https://tc39.github.io/ecma262/#sec-object.getownpropertynames
+	  // https://tc39.es/ecma262/#sec-object.getownpropertynames
 	  getOwnPropertyNames: $getOwnPropertyNames,
 	  // `Object.getOwnPropertySymbols` method
-	  // https://tc39.github.io/ecma262/#sec-object.getownpropertysymbols
+	  // https://tc39.es/ecma262/#sec-object.getownpropertysymbols
 	  getOwnPropertySymbols: $getOwnPropertySymbols
 	});
 
@@ -1087,7 +1090,7 @@
 	});
 
 	// `JSON.stringify` method behavior with symbols
-	// https://tc39.github.io/ecma262/#sec-json.stringify
+	// https://tc39.es/ecma262/#sec-json.stringify
 	if ($stringify) {
 	  var FORCED_JSON_STRINGIFY = !nativeSymbol || fails(function () {
 	    var symbol = $Symbol();
@@ -1119,12 +1122,12 @@
 	}
 
 	// `Symbol.prototype[@@toPrimitive]` method
-	// https://tc39.github.io/ecma262/#sec-symbol.prototype-@@toprimitive
+	// https://tc39.es/ecma262/#sec-symbol.prototype-@@toprimitive
 	if (!$Symbol[PROTOTYPE$1][TO_PRIMITIVE]) {
 	  createNonEnumerableProperty($Symbol[PROTOTYPE$1], TO_PRIMITIVE, $Symbol[PROTOTYPE$1].valueOf);
 	}
 	// `Symbol.prototype[@@toStringTag]` property
-	// https://tc39.github.io/ecma262/#sec-symbol.prototype-@@tostringtag
+	// https://tc39.es/ecma262/#sec-symbol.prototype-@@tostringtag
 	setToStringTag($Symbol, SYMBOL);
 
 	hiddenKeys[HIDDEN] = true;
@@ -1173,7 +1176,7 @@
 	}
 
 	// `Symbol.iterator` well-known symbol
-	// https://tc39.github.io/ecma262/#sec-symbol.iterator
+	// https://tc39.es/ecma262/#sec-symbol.iterator
 	defineWellKnownSymbol('iterator');
 
 	var arrayMethodIsStrict = function (METHOD_NAME, argument) {
@@ -1216,13 +1219,13 @@
 	var USES_TO_LENGTH = arrayMethodUsesToLength('forEach');
 
 	// `Array.prototype.forEach` method implementation
-	// https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+	// https://tc39.es/ecma262/#sec-array.prototype.foreach
 	var arrayForEach = (!STRICT_METHOD || !USES_TO_LENGTH) ? function forEach(callbackfn /* , thisArg */) {
 	  return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	} : [].forEach;
 
 	// `Array.prototype.forEach` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+	// https://tc39.es/ecma262/#sec-array.prototype.foreach
 	_export({ target: 'Array', proto: true, forced: [].forEach != arrayForEach }, {
 	  forEach: arrayForEach
 	});
@@ -1238,7 +1241,7 @@
 	var USES_TO_LENGTH$1 = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
 
 	// `Array.prototype.indexOf` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+	// https://tc39.es/ecma262/#sec-array.prototype.indexof
 	_export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD$1 || !USES_TO_LENGTH$1 }, {
 	  indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
 	    return NEGATIVE_ZERO
@@ -1249,7 +1252,7 @@
 	});
 
 	// `Array.isArray` method
-	// https://tc39.github.io/ecma262/#sec-array.isarray
+	// https://tc39.es/ecma262/#sec-array.isarray
 	_export({ target: 'Array', stat: true }, {
 	  isArray: isArray
 	});
@@ -1258,7 +1261,7 @@
 	var ArrayPrototype = Array.prototype;
 
 	// Array.prototype[@@unscopables]
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	if (ArrayPrototype[UNSCOPABLES] == undefined) {
 	  objectDefineProperty.f(ArrayPrototype, UNSCOPABLES, {
 	    configurable: true,
@@ -1283,7 +1286,7 @@
 	var ObjectPrototype$1 = Object.prototype;
 
 	// `Object.getPrototypeOf` method
-	// https://tc39.github.io/ecma262/#sec-object.getprototypeof
+	// https://tc39.es/ecma262/#sec-object.getprototypeof
 	var objectGetPrototypeOf = correctPrototypeGetter ? Object.getPrototypeOf : function (O) {
 	  O = toObject(O);
 	  if (has(O, IE_PROTO$1)) return O[IE_PROTO$1];
@@ -1298,7 +1301,7 @@
 	var returnThis = function () { return this; };
 
 	// `%IteratorPrototype%` object
-	// https://tc39.github.io/ecma262/#sec-%iteratorprototype%-object
+	// https://tc39.es/ecma262/#sec-%iteratorprototype%-object
 	var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
 
 	if ([].keys) {
@@ -1346,7 +1349,7 @@
 	};
 
 	// `Object.setPrototypeOf` method
-	// https://tc39.github.io/ecma262/#sec-object.setprototypeof
+	// https://tc39.es/ecma262/#sec-object.setprototypeof
 	// Works with __proto__ only. Old v8 can't work with null proto objects.
 	/* eslint-disable no-proto */
 	var objectSetPrototypeOf = Object.setPrototypeOf || ('__proto__' in {} ? function () {
@@ -1449,15 +1452,15 @@
 	var getInternalState$1 = internalState.getterFor(ARRAY_ITERATOR);
 
 	// `Array.prototype.entries` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.entries
+	// https://tc39.es/ecma262/#sec-array.prototype.entries
 	// `Array.prototype.keys` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.keys
+	// https://tc39.es/ecma262/#sec-array.prototype.keys
 	// `Array.prototype.values` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.values
+	// https://tc39.es/ecma262/#sec-array.prototype.values
 	// `Array.prototype[@@iterator]` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@iterator
+	// https://tc39.es/ecma262/#sec-array.prototype-@@iterator
 	// `CreateArrayIterator` internal method
-	// https://tc39.github.io/ecma262/#sec-createarrayiterator
+	// https://tc39.es/ecma262/#sec-createarrayiterator
 	var es_array_iterator = defineIterator(Array, 'Array', function (iterated, kind) {
 	  setInternalState$1(this, {
 	    type: ARRAY_ITERATOR,
@@ -1466,7 +1469,7 @@
 	    kind: kind                         // kind
 	  });
 	// `%ArrayIteratorPrototype%.next` method
-	// https://tc39.github.io/ecma262/#sec-%arrayiteratorprototype%.next
+	// https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
 	}, function () {
 	  var state = getInternalState$1(this);
 	  var target = state.target;
@@ -1482,11 +1485,11 @@
 	}, 'values');
 
 	// argumentsList[@@iterator] is %ArrayProto_values%
-	// https://tc39.github.io/ecma262/#sec-createunmappedargumentsobject
-	// https://tc39.github.io/ecma262/#sec-createmappedargumentsobject
+	// https://tc39.es/ecma262/#sec-createunmappedargumentsobject
+	// https://tc39.es/ecma262/#sec-createmappedargumentsobject
 	iterators.Arguments = iterators.Array;
 
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	addToUnscopables('keys');
 	addToUnscopables('values');
 	addToUnscopables('entries');
@@ -1497,7 +1500,7 @@
 	var STRICT_METHOD$2 = arrayMethodIsStrict('join', ',');
 
 	// `Array.prototype.join` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.join
+	// https://tc39.es/ecma262/#sec-array.prototype.join
 	_export({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD$2 }, {
 	  join: function join(separator) {
 	    return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
@@ -1549,7 +1552,7 @@
 	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('map');
 
 	// `Array.prototype.map` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.map
+	// https://tc39.es/ecma262/#sec-array.prototype.map
 	// with adding support of @@species
 	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH$2 }, {
 	  map: function map(callbackfn /* , thisArg */) {
@@ -1571,7 +1574,7 @@
 	var max$1 = Math.max;
 
 	// `Array.prototype.slice` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.slice
+	// https://tc39.es/ecma262/#sec-array.prototype.slice
 	// fallback for not array-like ES3 strings and DOM objects
 	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$3 }, {
 	  slice: function slice(start, end) {
@@ -1615,7 +1618,7 @@
 	};
 
 	// `ToIndex` abstract operation
-	// https://tc39.github.io/ecma262/#sec-toindex
+	// https://tc39.es/ecma262/#sec-toindex
 	var toIndex = function (it) {
 	  if (it === undefined) return 0;
 	  var number = toInteger(it);
@@ -1714,7 +1717,7 @@
 	};
 
 	// `Array.prototype.fill` method implementation
-	// https://tc39.github.io/ecma262/#sec-array.prototype.fill
+	// https://tc39.es/ecma262/#sec-array.prototype.fill
 	var arrayFill = function fill(value /* , start = 0, end = @length */) {
 	  var O = toObject(this);
 	  var length = toLength(O.length);
@@ -1958,7 +1961,7 @@
 	var NativeArrayBuffer$1 = global_1[ARRAY_BUFFER$1];
 
 	// `ArrayBuffer` constructor
-	// https://tc39.github.io/ecma262/#sec-arraybuffer-constructor
+	// https://tc39.es/ecma262/#sec-arraybuffer-constructor
 	_export({ global: true, forced: NativeArrayBuffer$1 !== ArrayBuffer$1 }, {
 	  ArrayBuffer: ArrayBuffer$1
 	});
@@ -2029,13 +2032,24 @@
 	  Float64Array: 8
 	};
 
+	var BigIntArrayConstructorsList = {
+	  BigInt64Array: 8,
+	  BigUint64Array: 8
+	};
+
 	var isView = function isView(it) {
+	  if (!isObject(it)) return false;
 	  var klass = classof(it);
-	  return klass === 'DataView' || has(TypedArrayConstructorsList, klass);
+	  return klass === 'DataView'
+	    || has(TypedArrayConstructorsList, klass)
+	    || has(BigIntArrayConstructorsList, klass);
 	};
 
 	var isTypedArray = function (it) {
-	  return isObject(it) && has(TypedArrayConstructorsList, classof(it));
+	  if (!isObject(it)) return false;
+	  var klass = classof(it);
+	  return has(TypedArrayConstructorsList, klass)
+	    || has(BigIntArrayConstructorsList, klass);
 	};
 
 	var aTypedArray = function (it) {
@@ -2146,7 +2160,7 @@
 	var NATIVE_ARRAY_BUFFER_VIEWS$1 = arrayBufferViewCore.NATIVE_ARRAY_BUFFER_VIEWS;
 
 	// `ArrayBuffer.isView` method
-	// https://tc39.github.io/ecma262/#sec-arraybuffer.isview
+	// https://tc39.es/ecma262/#sec-arraybuffer.isview
 	_export({ target: 'ArrayBuffer', stat: true, forced: !NATIVE_ARRAY_BUFFER_VIEWS$1 }, {
 	  isView: arrayBufferViewCore.isView
 	});
@@ -2154,7 +2168,7 @@
 	var SPECIES$4 = wellKnownSymbol('species');
 
 	// `SpeciesConstructor` abstract operation
-	// https://tc39.github.io/ecma262/#sec-speciesconstructor
+	// https://tc39.es/ecma262/#sec-speciesconstructor
 	var speciesConstructor = function (O, defaultConstructor) {
 	  var C = anObject(O).constructor;
 	  var S;
@@ -2170,7 +2184,7 @@
 	});
 
 	// `ArrayBuffer.prototype.slice` method
-	// https://tc39.github.io/ecma262/#sec-arraybuffer.prototype.slice
+	// https://tc39.es/ecma262/#sec-arraybuffer.prototype.slice
 	_export({ target: 'ArrayBuffer', proto: true, unsafe: true, forced: INCORRECT_SLICE }, {
 	  slice: function slice(start, end) {
 	    if (nativeArrayBufferSlice !== undefined && end === undefined) {
@@ -2190,7 +2204,7 @@
 	});
 
 	// `DataView` constructor
-	// https://tc39.github.io/ecma262/#sec-dataview-constructor
+	// https://tc39.es/ecma262/#sec-dataview-constructor
 	_export({ global: true, forced: !arrayBufferNative }, {
 	  DataView: arrayBuffer.DataView
 	});
@@ -2203,7 +2217,7 @@
 	var NAME$1 = 'name';
 
 	// Function instances `.name` property
-	// https://tc39.github.io/ecma262/#sec-function-instances-name
+	// https://tc39.es/ecma262/#sec-function-instances-name
 	if (descriptors && !(NAME$1 in FunctionPrototype)) {
 	  defineProperty$6(FunctionPrototype, NAME$1, {
 	    configurable: true,
@@ -2218,7 +2232,7 @@
 	}
 
 	// `Object.create` method
-	// https://tc39.github.io/ecma262/#sec-object.create
+	// https://tc39.es/ecma262/#sec-object.create
 	_export({ target: 'Object', stat: true, sham: !descriptors }, {
 	  create: objectCreate
 	});
@@ -2228,19 +2242,19 @@
 	var FAILS_ON_PRIMITIVES = fails(function () { return !Object.getOwnPropertyNames(1); });
 
 	// `Object.getOwnPropertyNames` method
-	// https://tc39.github.io/ecma262/#sec-object.getownpropertynames
+	// https://tc39.es/ecma262/#sec-object.getownpropertynames
 	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
 	  getOwnPropertyNames: nativeGetOwnPropertyNames$2
 	});
 
 	// `Object.prototype.toString` method implementation
-	// https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+	// https://tc39.es/ecma262/#sec-object.prototype.tostring
 	var objectToString = toStringTagSupport ? {}.toString : function toString() {
 	  return '[object ' + classof(this) + ']';
 	};
 
 	// `Object.prototype.toString` method
-	// https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+	// https://tc39.es/ecma262/#sec-object.prototype.tostring
 	if (!toStringTagSupport) {
 	  redefine(Object.prototype, 'toString', objectToString, { unsafe: true });
 	}
@@ -2463,8 +2477,11 @@
 	  clear: clear
 	};
 
+	var engineIsWebosWebkit = /web0s(?!.*chrome)/i.test(engineUserAgent);
+
 	var getOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
 	var macrotask = task.set;
+
 
 
 
@@ -2498,7 +2515,8 @@
 	  };
 
 	  // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
-	  if (!engineIsIos && !engineIsNode && MutationObserver && document$2) {
+	  // also except WebOS Webkit https://github.com/zloirock/core-js/issues/898
+	  if (!engineIsIos && !engineIsNode && !engineIsWebosWebkit && MutationObserver && document$2) {
 	    toggle = true;
 	    node = document$2.createTextNode('');
 	    new MutationObserver(flush).observe(node, { characterData: true });
@@ -2820,7 +2838,7 @@
 	  };
 	  Internal.prototype = redefineAll(PromiseConstructor.prototype, {
 	    // `Promise.prototype.then` method
-	    // https://tc39.github.io/ecma262/#sec-promise.prototype.then
+	    // https://tc39.es/ecma262/#sec-promise.prototype.then
 	    then: function then(onFulfilled, onRejected) {
 	      var state = getInternalPromiseState(this);
 	      var reaction = newPromiseCapability$1(speciesConstructor(this, PromiseConstructor));
@@ -2833,7 +2851,7 @@
 	      return reaction.promise;
 	    },
 	    // `Promise.prototype.catch` method
-	    // https://tc39.github.io/ecma262/#sec-promise.prototype.catch
+	    // https://tc39.es/ecma262/#sec-promise.prototype.catch
 	    'catch': function (onRejected) {
 	      return this.then(undefined, onRejected);
 	    }
@@ -2885,7 +2903,7 @@
 	// statics
 	_export({ target: PROMISE, stat: true, forced: FORCED }, {
 	  // `Promise.reject` method
-	  // https://tc39.github.io/ecma262/#sec-promise.reject
+	  // https://tc39.es/ecma262/#sec-promise.reject
 	  reject: function reject(r) {
 	    var capability = newPromiseCapability$1(this);
 	    capability.reject.call(undefined, r);
@@ -2895,7 +2913,7 @@
 
 	_export({ target: PROMISE, stat: true, forced:  FORCED }, {
 	  // `Promise.resolve` method
-	  // https://tc39.github.io/ecma262/#sec-promise.resolve
+	  // https://tc39.es/ecma262/#sec-promise.resolve
 	  resolve: function resolve(x) {
 	    return promiseResolve( this, x);
 	  }
@@ -2903,7 +2921,7 @@
 
 	_export({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
 	  // `Promise.all` method
-	  // https://tc39.github.io/ecma262/#sec-promise.all
+	  // https://tc39.es/ecma262/#sec-promise.all
 	  all: function all(iterable) {
 	    var C = this;
 	    var capability = newPromiseCapability$1(C);
@@ -2932,7 +2950,7 @@
 	    return capability.promise;
 	  },
 	  // `Promise.race` method
-	  // https://tc39.github.io/ecma262/#sec-promise.race
+	  // https://tc39.es/ecma262/#sec-promise.race
 	  race: function race(iterable) {
 	    var C = this;
 	    var capability = newPromiseCapability$1(C);
@@ -2949,7 +2967,7 @@
 	});
 
 	// `RegExp.prototype.flags` getter implementation
-	// https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
+	// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
 	var regexpFlags = function () {
 	  var that = anObject(this);
 	  var result = '';
@@ -3071,6 +3089,8 @@
 
 	var regexpExec = patchedExec;
 
+	// `RegExp.prototype.exec` method
+	// https://tc39.es/ecma262/#sec-regexp.prototype.exec
 	_export({ target: 'RegExp', proto: true, forced: /./.exec !== regexpExec }, {
 	  exec: regexpExec
 	});
@@ -3084,7 +3104,7 @@
 	var INCORRECT_NAME = nativeToString.name != TO_STRING$1;
 
 	// `RegExp.prototype.toString` method
-	// https://tc39.github.io/ecma262/#sec-regexp.prototype.tostring
+	// https://tc39.es/ecma262/#sec-regexp.prototype.tostring
 	if (NOT_GENERIC || INCORRECT_NAME) {
 	  redefine(RegExp.prototype, TO_STRING$1, function toString() {
 	    var R = anObject(this);
@@ -3113,7 +3133,7 @@
 
 	var stringMultibyte = {
 	  // `String.prototype.codePointAt` method
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.codepointat
+	  // https://tc39.es/ecma262/#sec-string.prototype.codepointat
 	  codeAt: createMethod$2(false),
 	  // `String.prototype.at` method
 	  // https://github.com/mathiasbynens/String.prototype.at
@@ -3129,7 +3149,7 @@
 	var getInternalState$4 = internalState.getterFor(STRING_ITERATOR);
 
 	// `String.prototype[@@iterator]` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype-@@iterator
+	// https://tc39.es/ecma262/#sec-string.prototype-@@iterator
 	defineIterator(String, 'String', function (iterated) {
 	  setInternalState$4(this, {
 	    type: STRING_ITERATOR,
@@ -3137,7 +3157,7 @@
 	    index: 0
 	  });
 	// `%StringIteratorPrototype%.next` method
-	// https://tc39.github.io/ecma262/#sec-%stringiteratorprototype%.next
+	// https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
 	}, function next() {
 	  var state = getInternalState$4(this);
 	  var string = state.string;
@@ -3277,13 +3297,52 @@
 	var charAt$1 = stringMultibyte.charAt;
 
 	// `AdvanceStringIndex` abstract operation
-	// https://tc39.github.io/ecma262/#sec-advancestringindex
+	// https://tc39.es/ecma262/#sec-advancestringindex
 	var advanceStringIndex = function (S, index, unicode) {
 	  return index + (unicode ? charAt$1(S, index).length : 1);
 	};
 
+	var floor$2 = Math.floor;
+	var replace = ''.replace;
+	var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d\d?|<[^>]*>)/g;
+	var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d\d?)/g;
+
+	// https://tc39.es/ecma262/#sec-getsubstitution
+	var getSubstitution = function (matched, str, position, captures, namedCaptures, replacement) {
+	  var tailPos = position + matched.length;
+	  var m = captures.length;
+	  var symbols = SUBSTITUTION_SYMBOLS_NO_NAMED;
+	  if (namedCaptures !== undefined) {
+	    namedCaptures = toObject(namedCaptures);
+	    symbols = SUBSTITUTION_SYMBOLS;
+	  }
+	  return replace.call(replacement, symbols, function (match, ch) {
+	    var capture;
+	    switch (ch.charAt(0)) {
+	      case '$': return '$';
+	      case '&': return matched;
+	      case '`': return str.slice(0, position);
+	      case "'": return str.slice(tailPos);
+	      case '<':
+	        capture = namedCaptures[ch.slice(1, -1)];
+	        break;
+	      default: // \d\d?
+	        var n = +ch;
+	        if (n === 0) return match;
+	        if (n > m) {
+	          var f = floor$2(n / 10);
+	          if (f === 0) return match;
+	          if (f <= m) return captures[f - 1] === undefined ? ch.charAt(1) : captures[f - 1] + ch.charAt(1);
+	          return match;
+	        }
+	        capture = captures[n - 1];
+	    }
+	    return capture === undefined ? '' : capture;
+	  });
+	};
+
 	// `RegExpExec` abstract operation
-	// https://tc39.github.io/ecma262/#sec-regexpexec
+	// https://tc39.es/ecma262/#sec-regexpexec
 	var regexpExecAbstract = function (R, S) {
 	  var exec = R.exec;
 	  if (typeof exec === 'function') {
@@ -3303,9 +3362,6 @@
 
 	var max$2 = Math.max;
 	var min$2 = Math.min;
-	var floor$2 = Math.floor;
-	var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d\d?|<[^>]*>)/g;
-	var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d\d?)/g;
 
 	var maybeToString = function (it) {
 	  return it === undefined ? it : String(it);
@@ -3319,7 +3375,7 @@
 
 	  return [
 	    // `String.prototype.replace` method
-	    // https://tc39.github.io/ecma262/#sec-string.prototype.replace
+	    // https://tc39.es/ecma262/#sec-string.prototype.replace
 	    function replace(searchValue, replaceValue) {
 	      var O = requireObjectCoercible(this);
 	      var replacer = searchValue == undefined ? undefined : searchValue[REPLACE];
@@ -3328,7 +3384,7 @@
 	        : nativeReplace.call(String(O), searchValue, replaceValue);
 	    },
 	    // `RegExp.prototype[@@replace]` method
-	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@replace
+	    // https://tc39.es/ecma262/#sec-regexp.prototype-@@replace
 	    function (regexp, replaceValue) {
 	      if (
 	        (!REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE && REPLACE_KEEPS_$0) ||
@@ -3391,46 +3447,12 @@
 	      return accumulatedResult + S.slice(nextSourcePosition);
 	    }
 	  ];
-
-	  // https://tc39.github.io/ecma262/#sec-getsubstitution
-	  function getSubstitution(matched, str, position, captures, namedCaptures, replacement) {
-	    var tailPos = position + matched.length;
-	    var m = captures.length;
-	    var symbols = SUBSTITUTION_SYMBOLS_NO_NAMED;
-	    if (namedCaptures !== undefined) {
-	      namedCaptures = toObject(namedCaptures);
-	      symbols = SUBSTITUTION_SYMBOLS;
-	    }
-	    return nativeReplace.call(replacement, symbols, function (match, ch) {
-	      var capture;
-	      switch (ch.charAt(0)) {
-	        case '$': return '$';
-	        case '&': return matched;
-	        case '`': return str.slice(0, position);
-	        case "'": return str.slice(tailPos);
-	        case '<':
-	          capture = namedCaptures[ch.slice(1, -1)];
-	          break;
-	        default: // \d\d?
-	          var n = +ch;
-	          if (n === 0) return match;
-	          if (n > m) {
-	            var f = floor$2(n / 10);
-	            if (f === 0) return match;
-	            if (f <= m) return captures[f - 1] === undefined ? ch.charAt(1) : captures[f - 1] + ch.charAt(1);
-	            return match;
-	          }
-	          capture = captures[n - 1];
-	      }
-	      return capture === undefined ? '' : capture;
-	    });
-	  }
 	});
 
 	var MATCH = wellKnownSymbol('match');
 
 	// `IsRegExp` abstract operation
-	// https://tc39.github.io/ecma262/#sec-isregexp
+	// https://tc39.es/ecma262/#sec-isregexp
 	var isRegexp = function (it) {
 	  var isRegExp;
 	  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
@@ -3498,7 +3520,7 @@
 
 	  return [
 	    // `String.prototype.split` method
-	    // https://tc39.github.io/ecma262/#sec-string.prototype.split
+	    // https://tc39.es/ecma262/#sec-string.prototype.split
 	    function split(separator, limit) {
 	      var O = requireObjectCoercible(this);
 	      var splitter = separator == undefined ? undefined : separator[SPLIT];
@@ -3507,7 +3529,7 @@
 	        : internalSplit.call(String(O), separator, limit);
 	    },
 	    // `RegExp.prototype[@@split]` method
-	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@split
+	    // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
 	    //
 	    // NOTE: This cannot be properly polyfilled in engines that don't support
 	    // the 'y' flag.
@@ -3579,13 +3601,13 @@
 
 	var stringTrim = {
 	  // `String.prototype.{ trimLeft, trimStart }` methods
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trimstart
+	  // https://tc39.es/ecma262/#sec-string.prototype.trimstart
 	  start: createMethod$3(1),
 	  // `String.prototype.{ trimRight, trimEnd }` methods
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trimend
+	  // https://tc39.es/ecma262/#sec-string.prototype.trimend
 	  end: createMethod$3(2),
 	  // `String.prototype.trim` method
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.trim
+	  // https://tc39.es/ecma262/#sec-string.prototype.trim
 	  trim: createMethod$3(3)
 	};
 
@@ -3603,7 +3625,7 @@
 
 
 	// `String.prototype.trim` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.trim
+	// https://tc39.es/ecma262/#sec-string.prototype.trim
 	_export({ target: 'String', proto: true, forced: stringTrimForced('trim') }, {
 	  trim: function trim() {
 	    return $trim(this);
@@ -3921,7 +3943,7 @@
 	});
 
 	// `Uint8Array` constructor
-	// https://tc39.github.io/ecma262/#sec-typedarray-objects
+	// https://tc39.es/ecma262/#sec-typedarray-objects
 	typedArrayConstructor('Uint8', function (init) {
 	  return function Uint8Array(data, byteOffset, length) {
 	    return init(this, data, byteOffset, length);
@@ -3931,7 +3953,7 @@
 	var min$4 = Math.min;
 
 	// `Array.prototype.copyWithin` method implementation
-	// https://tc39.github.io/ecma262/#sec-array.prototype.copywithin
+	// https://tc39.es/ecma262/#sec-array.prototype.copywithin
 	var arrayCopyWithin = [].copyWithin || function copyWithin(target /* = 0 */, start /* = 0, end = @length */) {
 	  var O = toObject(this);
 	  var len = toLength(O.length);
@@ -3957,7 +3979,7 @@
 	var exportTypedArrayMethod$1 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.copyWithin` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.copywithin
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.copywithin
 	exportTypedArrayMethod$1('copyWithin', function copyWithin(target, start /* , end */) {
 	  return arrayCopyWithin.call(aTypedArray$1(this), target, start, arguments.length > 2 ? arguments[2] : undefined);
 	});
@@ -3968,7 +3990,7 @@
 	var exportTypedArrayMethod$2 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.every` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.every
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.every
 	exportTypedArrayMethod$2('every', function every(callbackfn /* , thisArg */) {
 	  return $every(aTypedArray$2(this), callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -3977,7 +3999,7 @@
 	var exportTypedArrayMethod$3 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.fill` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.fill
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.fill
 	// eslint-disable-next-line no-unused-vars
 	exportTypedArrayMethod$3('fill', function fill(value /* , start, end */) {
 	  return arrayFill.apply(aTypedArray$3(this), arguments);
@@ -3991,7 +4013,7 @@
 	var exportTypedArrayMethod$4 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.filter` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.filter
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.filter
 	exportTypedArrayMethod$4('filter', function filter(callbackfn /* , thisArg */) {
 	  var list = $filter(aTypedArray$4(this), callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	  var C = speciesConstructor(this, this.constructor);
@@ -4008,7 +4030,7 @@
 	var exportTypedArrayMethod$5 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.find` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.find
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.find
 	exportTypedArrayMethod$5('find', function find(predicate /* , thisArg */) {
 	  return $find(aTypedArray$5(this), predicate, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4019,7 +4041,7 @@
 	var exportTypedArrayMethod$6 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.findIndex` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.findindex
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.findindex
 	exportTypedArrayMethod$6('findIndex', function findIndex(predicate /* , thisArg */) {
 	  return $findIndex(aTypedArray$6(this), predicate, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4030,7 +4052,7 @@
 	var exportTypedArrayMethod$7 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.forEach` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.foreach
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.foreach
 	exportTypedArrayMethod$7('forEach', function forEach(callbackfn /* , thisArg */) {
 	  $forEach$2(aTypedArray$7(this), callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4041,7 +4063,7 @@
 	var exportTypedArrayMethod$8 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.includes` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.includes
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.includes
 	exportTypedArrayMethod$8('includes', function includes(searchElement /* , fromIndex */) {
 	  return $includes(aTypedArray$8(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4052,7 +4074,7 @@
 	var exportTypedArrayMethod$9 = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.indexOf` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.indexof
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.indexof
 	exportTypedArrayMethod$9('indexOf', function indexOf(searchElement /* , fromIndex */) {
 	  return $indexOf$1(aTypedArray$9(this), searchElement, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4074,20 +4096,20 @@
 	};
 
 	// `%TypedArray%.prototype.entries` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.entries
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.entries
 	exportTypedArrayMethod$a('entries', function entries() {
 	  return arrayEntries.call(aTypedArray$a(this));
 	});
 	// `%TypedArray%.prototype.keys` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.keys
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.keys
 	exportTypedArrayMethod$a('keys', function keys() {
 	  return arrayKeys.call(aTypedArray$a(this));
 	});
 	// `%TypedArray%.prototype.values` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.values
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.values
 	exportTypedArrayMethod$a('values', typedArrayValues, !CORRECT_ITER_NAME);
 	// `%TypedArray%.prototype[@@iterator]` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype-@@iterator
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype-@@iterator
 	exportTypedArrayMethod$a(ITERATOR$5, typedArrayValues, !CORRECT_ITER_NAME);
 
 	var aTypedArray$b = arrayBufferViewCore.aTypedArray;
@@ -4095,7 +4117,7 @@
 	var $join = [].join;
 
 	// `%TypedArray%.prototype.join` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.join
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.join
 	// eslint-disable-next-line no-unused-vars
 	exportTypedArrayMethod$b('join', function join(separator) {
 	  return $join.apply(aTypedArray$b(this), arguments);
@@ -4110,7 +4132,7 @@
 	var FORCED$1 = NEGATIVE_ZERO$1 || !STRICT_METHOD$3 || !USES_TO_LENGTH$4;
 
 	// `Array.prototype.lastIndexOf` method implementation
-	// https://tc39.github.io/ecma262/#sec-array.prototype.lastindexof
+	// https://tc39.es/ecma262/#sec-array.prototype.lastindexof
 	var arrayLastIndexOf = FORCED$1 ? function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
 	  // convert -0 to +0
 	  if (NEGATIVE_ZERO$1) return nativeLastIndexOf.apply(this, arguments) || 0;
@@ -4127,7 +4149,7 @@
 	var exportTypedArrayMethod$c = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.lastIndexOf` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.lastindexof
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.lastindexof
 	// eslint-disable-next-line no-unused-vars
 	exportTypedArrayMethod$c('lastIndexOf', function lastIndexOf(searchElement /* , fromIndex */) {
 	  return arrayLastIndexOf.apply(aTypedArray$c(this), arguments);
@@ -4141,7 +4163,7 @@
 	var exportTypedArrayMethod$d = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.map` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.map
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.map
 	exportTypedArrayMethod$d('map', function map(mapfn /* , thisArg */) {
 	  return $map$1(aTypedArray$d(this), mapfn, arguments.length > 1 ? arguments[1] : undefined, function (O, length) {
 	    return new (aTypedArrayConstructor$3(speciesConstructor(O, O.constructor)))(length);
@@ -4177,10 +4199,10 @@
 
 	var arrayReduce = {
 	  // `Array.prototype.reduce` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+	  // https://tc39.es/ecma262/#sec-array.prototype.reduce
 	  left: createMethod$4(false),
 	  // `Array.prototype.reduceRight` method
-	  // https://tc39.github.io/ecma262/#sec-array.prototype.reduceright
+	  // https://tc39.es/ecma262/#sec-array.prototype.reduceright
 	  right: createMethod$4(true)
 	};
 
@@ -4190,7 +4212,7 @@
 	var exportTypedArrayMethod$e = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.reduce` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reduce
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.reduce
 	exportTypedArrayMethod$e('reduce', function reduce(callbackfn /* , initialValue */) {
 	  return $reduce(aTypedArray$e(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4201,7 +4223,7 @@
 	var exportTypedArrayMethod$f = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.reduceRicht` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reduceright
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.reduceright
 	exportTypedArrayMethod$f('reduceRight', function reduceRight(callbackfn /* , initialValue */) {
 	  return $reduceRight(aTypedArray$f(this), callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4211,7 +4233,7 @@
 	var floor$3 = Math.floor;
 
 	// `%TypedArray%.prototype.reverse` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reverse
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.reverse
 	exportTypedArrayMethod$g('reverse', function reverse() {
 	  var that = this;
 	  var length = aTypedArray$g(that).length;
@@ -4234,7 +4256,7 @@
 	});
 
 	// `%TypedArray%.prototype.set` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.set
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.set
 	exportTypedArrayMethod$h('set', function set(arrayLike /* , offset */) {
 	  aTypedArray$h(this);
 	  var offset = toOffset(arguments.length > 1 ? arguments[1] : undefined, 1);
@@ -4257,7 +4279,7 @@
 	});
 
 	// `%TypedArray%.prototype.slice` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.slice
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.slice
 	exportTypedArrayMethod$i('slice', function slice(start, end) {
 	  var list = $slice.call(aTypedArray$i(this), start, end);
 	  var C = speciesConstructor(this, this.constructor);
@@ -4274,7 +4296,7 @@
 	var exportTypedArrayMethod$j = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.some` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.some
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.some
 	exportTypedArrayMethod$j('some', function some(callbackfn /* , thisArg */) {
 	  return $some(aTypedArray$j(this), callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	});
@@ -4284,7 +4306,7 @@
 	var $sort = [].sort;
 
 	// `%TypedArray%.prototype.sort` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.sort
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.sort
 	exportTypedArrayMethod$k('sort', function sort(comparefn) {
 	  return $sort.call(aTypedArray$k(this), comparefn);
 	});
@@ -4293,7 +4315,7 @@
 	var exportTypedArrayMethod$l = arrayBufferViewCore.exportTypedArrayMethod;
 
 	// `%TypedArray%.prototype.subarray` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.subarray
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.subarray
 	exportTypedArrayMethod$l('subarray', function subarray(begin, end) {
 	  var O = aTypedArray$l(this);
 	  var length = O.length;
@@ -4323,7 +4345,7 @@
 	});
 
 	// `%TypedArray%.prototype.toLocaleString` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.tolocalestring
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.tolocalestring
 	exportTypedArrayMethod$m('toLocaleString', function toLocaleString() {
 	  return $toLocaleString.apply(TO_LOCALE_STRING_BUG ? $slice$1.call(aTypedArray$m(this)) : aTypedArray$m(this), arguments);
 	}, FORCED$4);
@@ -4346,7 +4368,7 @@
 	var IS_NOT_ARRAY_METHOD = Uint8ArrayPrototype.toString != arrayToString;
 
 	// `%TypedArray%.prototype.toString` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.tostring
+	// https://tc39.es/ecma262/#sec-%typedarray%.prototype.tostring
 	exportTypedArrayMethod$n('toString', arrayToString, IS_NOT_ARRAY_METHOD);
 
 	// iterable DOM collections
@@ -4483,7 +4505,7 @@
 	var defineProperty$7 = Object.defineProperty;
 
 	// `Object.assign` method
-	// https://tc39.github.io/ecma262/#sec-object.assign
+	// https://tc39.es/ecma262/#sec-object.assign
 	var objectAssign = !nativeAssign || fails(function () {
 	  // should have correct order of operations (Edge bug)
 	  if (descriptors && nativeAssign({ b: 1 }, nativeAssign(defineProperty$7({}, 'a', {
@@ -4535,7 +4557,7 @@
 	};
 
 	// `Array.from` method implementation
-	// https://tc39.github.io/ecma262/#sec-array.from
+	// https://tc39.es/ecma262/#sec-array.from
 	var arrayFrom = function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
 	  var O = toObject(arrayLike);
 	  var C = typeof this == 'function' ? this : Array;
@@ -4803,7 +4825,7 @@
 
 	var find = /[!'()~]|%20/g;
 
-	var replace = {
+	var replace$1 = {
 	  '!': '%21',
 	  "'": '%27',
 	  '(': '%28',
@@ -4813,7 +4835,7 @@
 	};
 
 	var replacer = function (match) {
-	  return replace[match];
+	  return replace$1[match];
 	};
 
 	var serialize = function (it) {
@@ -6885,7 +6907,7 @@
 	}
 
 	// `Symbol.toStringTag` well-known symbol
-	// https://tc39.github.io/ecma262/#sec-symbol.tostringtag
+	// https://tc39.es/ecma262/#sec-symbol.tostringtag
 	defineWellKnownSymbol('toStringTag');
 
 	var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('splice');
@@ -6897,7 +6919,7 @@
 	var MAXIMUM_ALLOWED_LENGTH_EXCEEDED = 'Maximum allowed length exceeded';
 
 	// `Array.prototype.splice` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.splice
+	// https://tc39.es/ecma262/#sec-array.prototype.splice
 	// with adding support of @@species
 	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$5 }, {
 	  splice: function splice(start, deleteCount /* , ...items */) {
@@ -6949,15 +6971,15 @@
 	});
 
 	// JSON[@@toStringTag] property
-	// https://tc39.github.io/ecma262/#sec-json-@@tostringtag
+	// https://tc39.es/ecma262/#sec-json-@@tostringtag
 	setToStringTag(global_1.JSON, 'JSON', true);
 
 	// Math[@@toStringTag] property
-	// https://tc39.github.io/ecma262/#sec-math-@@tostringtag
+	// https://tc39.es/ecma262/#sec-math-@@tostringtag
 	setToStringTag(Math, 'Math', true);
 
 	// `Object.defineProperty` method
-	// https://tc39.github.io/ecma262/#sec-object.defineproperty
+	// https://tc39.es/ecma262/#sec-object.defineproperty
 	_export({ target: 'Object', stat: true, forced: !descriptors, sham: !descriptors }, {
 	  defineProperty: objectDefineProperty.f
 	});
@@ -6969,7 +6991,7 @@
 	var FORCED$5 = !descriptors || FAILS_ON_PRIMITIVES$1;
 
 	// `Object.getOwnPropertyDescriptor` method
-	// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
+	// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
 	_export({ target: 'Object', stat: true, forced: FORCED$5, sham: !descriptors }, {
 	  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
 	    return nativeGetOwnPropertyDescriptor$2(toIndexedObject(it), key);
@@ -6979,7 +7001,7 @@
 	var FAILS_ON_PRIMITIVES$2 = fails(function () { objectGetPrototypeOf(1); });
 
 	// `Object.getPrototypeOf` method
-	// https://tc39.github.io/ecma262/#sec-object.getprototypeof
+	// https://tc39.es/ecma262/#sec-object.getprototypeof
 	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES$2, sham: !correctPrototypeGetter }, {
 	  getPrototypeOf: function getPrototypeOf(it) {
 	    return objectGetPrototypeOf(toObject(it));
@@ -6987,7 +7009,7 @@
 	});
 
 	// `Object.setPrototypeOf` method
-	// https://tc39.github.io/ecma262/#sec-object.setprototypeof
+	// https://tc39.es/ecma262/#sec-object.setprototypeof
 	_export({ target: 'Object', stat: true }, {
 	  setPrototypeOf: objectSetPrototypeOf
 	});
@@ -7004,7 +7026,7 @@
 	};
 
 	// `Function.prototype.bind` method implementation
-	// https://tc39.github.io/ecma262/#sec-function.prototype.bind
+	// https://tc39.es/ecma262/#sec-function.prototype.bind
 	var functionBind = Function.bind || function bind(that /* , ...args */) {
 	  var fn = aFunction$1(this);
 	  var partArgs = slice$1.call(arguments, 1);
@@ -7019,7 +7041,7 @@
 	var nativeConstruct = getBuiltIn('Reflect', 'construct');
 
 	// `Reflect.construct` method
-	// https://tc39.github.io/ecma262/#sec-reflect.construct
+	// https://tc39.es/ecma262/#sec-reflect.construct
 	// MS Edge supports only 2 arguments and argumentsList argument is optional
 	// FF Nightly sets third argument as `new.target`, but does not create `this` from it
 	var NEW_TARGET_BUG = fails(function () {
@@ -7060,7 +7082,7 @@
 	});
 
 	// `Reflect.get` method
-	// https://tc39.github.io/ecma262/#sec-reflect.get
+	// https://tc39.es/ecma262/#sec-reflect.get
 	function get$2(target, propertyKey /* , receiver */) {
 	  var receiver = arguments.length < 3 ? target : arguments[2];
 	  var descriptor, prototype;
@@ -7225,12 +7247,15 @@
 
 	    _createClass(Emitter, [{
 	      key: "addEventListener",
-	      value: function addEventListener(type, callback) {
+	      value: function addEventListener(type, callback, options) {
 	        if (!(type in this.listeners)) {
 	          this.listeners[type] = [];
 	        }
 
-	        this.listeners[type].push(callback);
+	        this.listeners[type].push({
+	          callback: callback,
+	          options: options
+	        });
 	      }
 	    }, {
 	      key: "removeEventListener",
@@ -7242,7 +7267,7 @@
 	        var stack = this.listeners[type];
 
 	        for (var i = 0, l = stack.length; i < l; i++) {
-	          if (stack[i] === callback) {
+	          if (stack[i].callback === callback) {
 	            stack.splice(i, 1);
 	            return;
 	          }
@@ -7251,22 +7276,27 @@
 	    }, {
 	      key: "dispatchEvent",
 	      value: function dispatchEvent(event) {
-	        var _this = this;
-
 	        if (!(event.type in this.listeners)) {
 	          return;
 	        }
 
-	        var debounce = function debounce(callback) {
-	          setTimeout(function () {
-	            return callback.call(_this, event);
-	          });
-	        };
-
 	        var stack = this.listeners[event.type];
+	        var stackToCall = stack.slice();
 
-	        for (var i = 0, l = stack.length; i < l; i++) {
-	          debounce(stack[i]);
+	        for (var i = 0, l = stackToCall.length; i < l; i++) {
+	          var listener = stackToCall[i];
+
+	          try {
+	            listener.callback.call(this, event);
+	          } catch (e) {
+	            Promise.resolve().then(function () {
+	              throw e;
+	            });
+	          }
+
+	          if (listener.options && listener.options.once) {
+	            this.removeEventListener(event.type, listener.callback);
+	          }
 	        }
 
 	        return !event.defaultPrevented;
@@ -7282,34 +7312,34 @@
 	    var _super = _createSuper(AbortSignal);
 
 	    function AbortSignal() {
-	      var _this2;
+	      var _this;
 
 	      _classCallCheck(this, AbortSignal);
 
-	      _this2 = _super.call(this); // Some versions of babel does not transpile super() correctly for IE <= 10, if the parent
+	      _this = _super.call(this); // Some versions of babel does not transpile super() correctly for IE <= 10, if the parent
 	      // constructor has failed to run, then "this.listeners" will still be undefined and then we call
 	      // the parent constructor directly instead as a workaround. For general details, see babel bug:
 	      // https://github.com/babel/babel/issues/3041
 	      // This hack was added as a fix for the issue described here:
 	      // https://github.com/Financial-Times/polyfill-library/pull/59#issuecomment-477558042
 
-	      if (!_this2.listeners) {
-	        Emitter.call(_assertThisInitialized(_this2));
+	      if (!_this.listeners) {
+	        Emitter.call(_assertThisInitialized(_this));
 	      } // Compared to assignment, Object.defineProperty makes properties non-enumerable by default and
 	      // we want Object.keys(new AbortController().signal) to be [] for compat with the native impl
 
 
-	      Object.defineProperty(_assertThisInitialized(_this2), 'aborted', {
+	      Object.defineProperty(_assertThisInitialized(_this), 'aborted', {
 	        value: false,
 	        writable: true,
 	        configurable: true
 	      });
-	      Object.defineProperty(_assertThisInitialized(_this2), 'onabort', {
+	      Object.defineProperty(_assertThisInitialized(_this), 'onabort', {
 	        value: null,
 	        writable: true,
 	        configurable: true
 	      });
-	      return _this2;
+	      return _this;
 	    }
 
 	    _createClass(AbortSignal, [{
@@ -7611,7 +7641,7 @@
 	var FORCED$7 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
 
 	// `Array.prototype.concat` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.concat
+	// https://tc39.es/ecma262/#sec-array.prototype.concat
 	// with adding support of @@isConcatSpreadable and @@species
 	_export({ target: 'Array', proto: true, forced: FORCED$7 }, {
 	  concat: function concat(arg) { // eslint-disable-line no-unused-vars
@@ -7636,7 +7666,7 @@
 	});
 
 	// `Object.assign` method
-	// https://tc39.github.io/ecma262/#sec-object.assign
+	// https://tc39.es/ecma262/#sec-object.assign
 	_export({ target: 'Object', stat: true, forced: Object.assign !== objectAssign }, {
 	  assign: objectAssign
 	});
@@ -7650,7 +7680,7 @@
 	var USES_TO_LENGTH$6 = arrayMethodUsesToLength('filter');
 
 	// `Array.prototype.filter` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.filter
+	// https://tc39.es/ecma262/#sec-array.prototype.filter
 	// with adding support of @@species
 	_export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$3 || !USES_TO_LENGTH$6 }, {
 	  filter: function filter(callbackfn /* , thisArg */) {
@@ -7662,7 +7692,7 @@
 	var test$1 = [1, 2];
 
 	// `Array.prototype.reverse` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.reverse
+	// https://tc39.es/ecma262/#sec-array.prototype.reverse
 	// fix for Safari 12.0 bug
 	// https://bugs.webkit.org/show_bug.cgi?id=188794
 	_export({ target: 'Array', proto: true, forced: String(test$1) === String(test$1.reverse()) }, {
@@ -7676,7 +7706,7 @@
 	var FAILS_ON_PRIMITIVES$3 = fails(function () { objectKeys(1); });
 
 	// `Object.keys` method
-	// https://tc39.github.io/ecma262/#sec-object.keys
+	// https://tc39.es/ecma262/#sec-object.keys
 	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES$3 }, {
 	  keys: function keys(it) {
 	    return objectKeys(toObject(it));
@@ -7690,7 +7720,7 @@
 	var FORCED$8 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
 
 	// `parseFloat` method
-	// https://tc39.github.io/ecma262/#sec-parsefloat-string
+	// https://tc39.es/ecma262/#sec-parsefloat-string
 	var numberParseFloat = FORCED$8 ? function parseFloat(string) {
 	  var trimmedString = trim(String(string));
 	  var result = $parseFloat(trimmedString);
@@ -7698,7 +7728,7 @@
 	} : $parseFloat;
 
 	// `parseFloat` method
-	// https://tc39.github.io/ecma262/#sec-parsefloat-string
+	// https://tc39.es/ecma262/#sec-parsefloat-string
 	_export({ global: true, forced: parseFloat != numberParseFloat }, {
 	  parseFloat: numberParseFloat
 	});
@@ -8114,14 +8144,14 @@
 	var FORCED$9 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
 
 	// `parseInt` method
-	// https://tc39.github.io/ecma262/#sec-parseint-string-radix
+	// https://tc39.es/ecma262/#sec-parseint-string-radix
 	var numberParseInt = FORCED$9 ? function parseInt(string, radix) {
 	  var S = trim$1(String(string));
 	  return $parseInt(S, (radix >>> 0) || (hex$1.test(S) ? 16 : 10));
 	} : $parseInt;
 
 	// `parseInt` method
-	// https://tc39.github.io/ecma262/#sec-parseint-string-radix
+	// https://tc39.es/ecma262/#sec-parseint-string-radix
 	_export({ global: true, forced: parseInt != numberParseInt }, {
 	  parseInt: numberParseInt
 	});
@@ -8464,7 +8494,7 @@
 	};
 
 	// `Set` constructor
-	// https://tc39.github.io/ecma262/#sec-set-objects
+	// https://tc39.es/ecma262/#sec-set-objects
 	var es_set = collection('Set', function (init) {
 	  return function Set() { return init(this, arguments.length ? arguments[0] : undefined); };
 	}, collectionStrong);
@@ -8530,7 +8560,7 @@
 	}
 
 	// `Symbol.asyncIterator` well-known symbol
-	// https://tc39.github.io/ecma262/#sec-symbol.asynciterator
+	// https://tc39.es/ecma262/#sec-symbol.asynciterator
 	defineWellKnownSymbol('asyncIterator');
 
 	var runtime_1 = createCommonjsModule(function (module) {
@@ -9377,12 +9407,12 @@
 	var bisectCenter = d3_bisector(number).center;
 
 	// `Array.prototype.fill` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.fill
+	// https://tc39.es/ecma262/#sec-array.prototype.fill
 	_export({ target: 'Array', proto: true }, {
 	  fill: arrayFill
 	});
 
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	addToUnscopables('fill');
 
 	var INCORRECT_ITERATION$1 = !checkCorrectnessOfIteration(function (iterable) {
@@ -9390,7 +9420,7 @@
 	});
 
 	// `Array.from` method
-	// https://tc39.github.io/ecma262/#sec-array.from
+	// https://tc39.es/ecma262/#sec-array.from
 	_export({ target: 'Array', stat: true, forced: INCORRECT_ITERATION$1 }, {
 	  from: arrayFrom
 	});
@@ -9403,7 +9433,7 @@
 	var USES_TO_LENGTH$7 = arrayMethodUsesToLength('some');
 
 	// `Array.prototype.some` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.some
+	// https://tc39.es/ecma262/#sec-array.prototype.some
 	_export({ target: 'Array', proto: true, forced: !STRICT_METHOD$4 || !USES_TO_LENGTH$7 }, {
 	  some: function some(callbackfn /* , thisArg */) {
 	    return $some$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
@@ -9411,7 +9441,7 @@
 	});
 
 	// `Float64Array` constructor
-	// https://tc39.github.io/ecma262/#sec-typedarray-objects
+	// https://tc39.es/ecma262/#sec-typedarray-objects
 	typedArrayConstructor('Float64', function (init) {
 	  return function Float64Array(data, byteOffset, length) {
 	    return init(this, data, byteOffset, length);
@@ -9422,7 +9452,7 @@
 
 
 	// `%TypedArray%.from` method
-	// https://tc39.github.io/ecma262/#sec-%typedarray%.from
+	// https://tc39.es/ecma262/#sec-%typedarray%.from
 	exportTypedArrayStaticMethod$1('from', typedArrayFrom, typedArrayConstructorsRequireWrappers);
 
 	function d3_descending (a, b) {
@@ -9492,7 +9522,7 @@
 	}();
 
 	// `Map` constructor
-	// https://tc39.github.io/ecma262/#sec-map-objects
+	// https://tc39.es/ecma262/#sec-map-objects
 	var es_map = collection('Map', function (init) {
 	  return function Map() { return init(this, arguments.length ? arguments[0] : undefined); };
 	}, collectionStrong);
@@ -9789,7 +9819,7 @@
 	var FORCED$a = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD$5;
 
 	// `Array.prototype.sort` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.sort
+	// https://tc39.es/ecma262/#sec-array.prototype.sort
 	_export({ target: 'Array', proto: true, forced: FORCED$a }, {
 	  sort: function sort(comparefn) {
 	    return comparefn === undefined
@@ -9799,7 +9829,7 @@
 	});
 
 	// `SameValue` abstract operation
-	// https://tc39.github.io/ecma262/#sec-samevalue
+	// https://tc39.es/ecma262/#sec-samevalue
 	var sameValue = Object.is || function is(x, y) {
 	  // eslint-disable-next-line no-self-compare
 	  return x === y ? x !== 0 || 1 / x === 1 / y : x != x && y != y;
@@ -9814,7 +9844,7 @@
 	var BUGGY = !!$hypot && $hypot(Infinity, NaN) !== Infinity;
 
 	// `Math.hypot` method
-	// https://tc39.github.io/ecma262/#sec-math.hypot
+	// https://tc39.es/ecma262/#sec-math.hypot
 	_export({ target: 'Math', stat: true, forced: BUGGY }, {
 	  hypot: function hypot(value1, value2) { // eslint-disable-line no-unused-vars
 	    var sum = 0;
@@ -9838,14 +9868,14 @@
 	});
 
 	// `Math.sign` method implementation
-	// https://tc39.github.io/ecma262/#sec-math.sign
+	// https://tc39.es/ecma262/#sec-math.sign
 	var mathSign = Math.sign || function sign(x) {
 	  // eslint-disable-next-line no-self-compare
 	  return (x = +x) == 0 || x != x ? x : x < 0 ? -1 : 1;
 	};
 
 	// `Math.sign` method
-	// https://tc39.github.io/ecma262/#sec-math.sign
+	// https://tc39.es/ecma262/#sec-math.sign
 	_export({ target: 'Math', stat: true }, {
 	  sign: mathSign
 	});
@@ -12451,7 +12481,7 @@
 	var USES_TO_LENGTH$8 = arrayMethodUsesToLength('every');
 
 	// `Array.prototype.every` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.every
+	// https://tc39.es/ecma262/#sec-array.prototype.every
 	_export({ target: 'Array', proto: true, forced: !STRICT_METHOD$6 || !USES_TO_LENGTH$8 }, {
 	  every: function every(callbackfn /* , thisArg */) {
 	    return $every$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
@@ -12471,7 +12501,7 @@
 	var CHROME_BUG = !engineIsNode && engineV8Version > 79 && engineV8Version < 83;
 
 	// `Array.prototype.reduce` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+	// https://tc39.es/ecma262/#sec-array.prototype.reduce
 	_export({ target: 'Array', proto: true, forced: !STRICT_METHOD$7 || !USES_TO_LENGTH$9 || CHROME_BUG }, {
 	  reduce: function reduce(callbackfn /* , initialValue */) {
 	    return $reduce$1(this, callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
@@ -13233,14 +13263,14 @@
 	if (FIND in []) Array(1)[FIND](function () { SKIPS_HOLES = false; });
 
 	// `Array.prototype.find` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.find
+	// https://tc39.es/ecma262/#sec-array.prototype.find
 	_export({ target: 'Array', proto: true, forced: SKIPS_HOLES || !USES_TO_LENGTH$a }, {
 	  find: function find(callbackfn /* , that = undefined */) {
 	    return $find$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	  }
 	});
 
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	addToUnscopables(FIND);
 
 	function matcher (selector) {
@@ -14183,7 +14213,7 @@
 	});
 
 	// `Object.defineProperties` method
-	// https://tc39.github.io/ecma262/#sec-object.defineproperties
+	// https://tc39.es/ecma262/#sec-object.defineproperties
 	_export({ target: 'Object', stat: true, forced: !descriptors, sham: !descriptors }, {
 	  defineProperties: objectDefineProperties
 	});
@@ -14488,7 +14518,7 @@
 	})));
 
 	// `RegExp` constructor
-	// https://tc39.github.io/ecma262/#sec-regexp-constructor
+	// https://tc39.es/ecma262/#sec-regexp-constructor
 	if (FORCED$b) {
 	  var RegExpWrapper = function RegExp(pattern, flags) {
 	    var thisIsRegExp = this instanceof RegExpWrapper;
@@ -14537,7 +14567,7 @@
 	  redefine(global_1, 'RegExp', RegExpWrapper);
 	}
 
-	// https://tc39.github.io/ecma262/#sec-get-regexp-@@species
+	// https://tc39.es/ecma262/#sec-get-regexp-@@species
 	setSpecies('RegExp');
 
 	function define (constructor, factory, prototype) {
@@ -15319,7 +15349,7 @@
 	}
 
 	// `Function.prototype.bind` method
-	// https://tc39.github.io/ecma262/#sec-function.prototype.bind
+	// https://tc39.es/ecma262/#sec-function.prototype.bind
 	_export({ target: 'Function', proto: true }, {
 	  bind: functionBind
 	});
@@ -17003,7 +17033,7 @@
 	var FAILS_ON_PRIMITIVES$4 = fails(function () { nativeFreeze(1); });
 
 	// `Object.freeze` method
-	// https://tc39.github.io/ecma262/#sec-object.freeze
+	// https://tc39.es/ecma262/#sec-object.freeze
 	_export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES$4, sham: !freezing }, {
 	  freeze: function freeze(it) {
 	    return nativeFreeze && isObject(it) ? nativeFreeze(onFreeze(it)) : it;
@@ -17158,14 +17188,14 @@
 	fixRegexpWellKnownSymbolLogic('match', 1, function (MATCH, nativeMatch, maybeCallNative) {
 	  return [
 	    // `String.prototype.match` method
-	    // https://tc39.github.io/ecma262/#sec-string.prototype.match
+	    // https://tc39.es/ecma262/#sec-string.prototype.match
 	    function match(regexp) {
 	      var O = requireObjectCoercible(this);
 	      var matcher = regexp == undefined ? undefined : regexp[MATCH];
 	      return matcher !== undefined ? matcher.call(regexp, O) : new RegExp(regexp)[MATCH](String(O));
 	    },
 	    // `RegExp.prototype[@@match]` method
-	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@match
+	    // https://tc39.es/ecma262/#sec-regexp.prototype-@@match
 	    function (regexp) {
 	      var res = maybeCallNative(nativeMatch, regexp, this);
 	      if (res.done) return res.value;
@@ -19753,17 +19783,17 @@
 
 	var objectToArray = {
 	  // `Object.entries` method
-	  // https://tc39.github.io/ecma262/#sec-object.entries
+	  // https://tc39.es/ecma262/#sec-object.entries
 	  entries: createMethod$5(true),
 	  // `Object.values` method
-	  // https://tc39.github.io/ecma262/#sec-object.values
+	  // https://tc39.es/ecma262/#sec-object.values
 	  values: createMethod$5(false)
 	};
 
 	var $values = objectToArray.values;
 
 	// `Object.values` method
-	// https://tc39.github.io/ecma262/#sec-object.values
+	// https://tc39.es/ecma262/#sec-object.values
 	_export({ target: 'Object', stat: true }, {
 	  values: function values(O) {
 	    return $values(O);
@@ -19958,14 +19988,14 @@
 	if (FIND_INDEX in []) Array(1)[FIND_INDEX](function () { SKIPS_HOLES$1 = false; });
 
 	// `Array.prototype.findIndex` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.findindex
+	// https://tc39.es/ecma262/#sec-array.prototype.findindex
 	_export({ target: 'Array', proto: true, forced: SKIPS_HOLES$1 || !USES_TO_LENGTH$b }, {
 	  findIndex: function findIndex(callbackfn /* , that = undefined */) {
 	    return $findIndex$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 	  }
 	});
 
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	addToUnscopables(FIND_INDEX);
 
 	var $includes$1 = arrayIncludes.includes;
@@ -19975,14 +20005,14 @@
 	var USES_TO_LENGTH$c = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
 
 	// `Array.prototype.includes` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.includes
+	// https://tc39.es/ecma262/#sec-array.prototype.includes
 	_export({ target: 'Array', proto: true, forced: !USES_TO_LENGTH$c }, {
 	  includes: function includes(el /* , fromIndex = 0 */) {
 	    return $includes$1(this, el, arguments.length > 1 ? arguments[1] : undefined);
 	  }
 	});
 
-	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+	// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 	addToUnscopables('includes');
 
 	var notARegexp = function (it) {
@@ -20006,7 +20036,7 @@
 	};
 
 	// `String.prototype.includes` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.includes
+	// https://tc39.es/ecma262/#sec-string.prototype.includes
 	_export({ target: 'String', proto: true, forced: !correctIsRegexpLogic('includes') }, {
 	  includes: function includes(searchString /* , position = 0 */) {
 	    return !!~String(requireObjectCoercible(this))
@@ -20135,7 +20165,7 @@
 	var BROKEN_CLASSOF = classofRaw(objectCreate(NumberPrototype)) == NUMBER;
 
 	// `ToNumber` abstract operation
-	// https://tc39.github.io/ecma262/#sec-tonumber
+	// https://tc39.es/ecma262/#sec-tonumber
 	var toNumber = function (argument) {
 	  var it = toPrimitive(argument, false);
 	  var first, third, radix, maxCode, digits, length, index, code;
@@ -20164,7 +20194,7 @@
 	};
 
 	// `Number` constructor
-	// https://tc39.github.io/ecma262/#sec-number-constructor
+	// https://tc39.es/ecma262/#sec-number-constructor
 	if (isForced_1(NUMBER, !NativeNumber(' 0o1') || !NativeNumber('0b1') || NativeNumber('+0x1'))) {
 	  var NumberWrapper = function Number(value) {
 	    var it = arguments.length < 1 ? 0 : value;
@@ -20179,7 +20209,9 @@
 	    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
 	    // ES2015 (in case, if modules with ES2015 Number statics required before):
 	    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
-	    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
+	    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger,' +
+	    // ESNext
+	    'fromString,range'
 	  ).split(','), j$2 = 0, key$1; keys$3.length > j$2; j$2++) {
 	    if (has(NativeNumber, key$1 = keys$3[j$2]) && !has(NumberWrapper, key$1)) {
 	      defineProperty$a(NumberWrapper, key$1, getOwnPropertyDescriptor$3(NativeNumber, key$1));
@@ -20191,7 +20223,7 @@
 	}
 
 	// `Number.MAX_SAFE_INTEGER` constant
-	// https://tc39.github.io/ecma262/#sec-number.max_safe_integer
+	// https://tc39.es/ecma262/#sec-number.max_safe_integer
 	_export({ target: 'Number', stat: true }, {
 	  MAX_SAFE_INTEGER: 0x1FFFFFFFFFFFFF
 	});
@@ -22465,7 +22497,7 @@
 	}
 
 	// `Array.prototype.lastIndexOf` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.lastindexof
+	// https://tc39.es/ecma262/#sec-array.prototype.lastindexof
 	_export({ target: 'Array', proto: true, forced: arrayLastIndexOf !== [].lastIndexOf }, {
 	  lastIndexOf: arrayLastIndexOf
 	});
@@ -28892,7 +28924,7 @@
 	var UNSUPPORTED_Y$3 = regexpStickyHelpers.UNSUPPORTED_Y;
 
 	// `RegExp.prototype.flags` getter
-	// https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
+	// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
 	if (descriptors && (/./g.flags != 'g' || UNSUPPORTED_Y$3)) {
 	  objectDefineProperty.f(RegExp.prototype, 'flags', {
 	    configurable: true,
@@ -31349,7 +31381,7 @@
 	}
 
 	// `thisNumberValue` abstract operation
-	// https://tc39.github.io/ecma262/#sec-thisnumbervalue
+	// https://tc39.es/ecma262/#sec-thisnumbervalue
 	var thisNumberValue = function (value) {
 	  if (typeof value != 'number' && classofRaw(value) != 'Number') {
 	    throw TypeError('Incorrect invocation');
@@ -31358,7 +31390,7 @@
 	};
 
 	// `String.prototype.repeat` method implementation
-	// https://tc39.github.io/ecma262/#sec-string.prototype.repeat
+	// https://tc39.es/ecma262/#sec-string.prototype.repeat
 	var stringRepeat = ''.repeat || function repeat(count) {
 	  var str = String(requireObjectCoercible(this));
 	  var result = '';
@@ -31399,7 +31431,7 @@
 	});
 
 	// `Number.prototype.toFixed` method
-	// https://tc39.github.io/ecma262/#sec-number.prototype.tofixed
+	// https://tc39.es/ecma262/#sec-number.prototype.tofixed
 	_export({ target: 'Number', proto: true, forced: FORCED$c }, {
 	  // eslint-disable-next-line max-statements
 	  toFixed: function toFixed(fractionDigits) {
@@ -31499,7 +31531,7 @@
 	});
 
 	// `Number.prototype.toPrecision` method
-	// https://tc39.github.io/ecma262/#sec-number.prototype.toprecision
+	// https://tc39.es/ecma262/#sec-number.prototype.toprecision
 	_export({ target: 'Number', proto: true, forced: FORCED$d }, {
 	  toPrecision: function toPrecision(precision) {
 	    return precision === undefined
@@ -31832,7 +31864,7 @@
 	var exp$1 = Math.exp;
 
 	// `Math.expm1` method implementation
-	// https://tc39.github.io/ecma262/#sec-math.expm1
+	// https://tc39.es/ecma262/#sec-math.expm1
 	var mathExpm1 = (!nativeExpm1
 	  // Old FF bug
 	  || nativeExpm1(10) > 22025.465794806719 || nativeExpm1(10) < 22025.4657948067165168
@@ -31920,10 +31952,10 @@
 
 	var stringPad = {
 	  // `String.prototype.padStart` method
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.padstart
+	  // https://tc39.es/ecma262/#sec-string.prototype.padstart
 	  start: createMethod$6(false),
 	  // `String.prototype.padEnd` method
-	  // https://tc39.github.io/ecma262/#sec-string.prototype.padend
+	  // https://tc39.es/ecma262/#sec-string.prototype.padend
 	  end: createMethod$6(true)
 	};
 
@@ -31935,7 +31967,7 @@
 	var nativeDateToISOString = DatePrototype$1.toISOString;
 
 	// `Date.prototype.toISOString` method implementation
-	// https://tc39.github.io/ecma262/#sec-date.prototype.toisostring
+	// https://tc39.es/ecma262/#sec-date.prototype.toisostring
 	// PhantomJS / old WebKit fails here:
 	var dateToIsoString = (fails(function () {
 	  return nativeDateToISOString.call(new Date(-5e13 - 1)) != '0385-07-25T07:06:39.999Z';
@@ -31958,7 +31990,7 @@
 	} : nativeDateToISOString;
 
 	// `Date.prototype.toISOString` method
-	// https://tc39.github.io/ecma262/#sec-date.prototype.toisostring
+	// https://tc39.es/ecma262/#sec-date.prototype.toisostring
 	// PhantomJS / old WebKit has a broken implementations
 	_export({ target: 'Date', proto: true, forced: Date.prototype.toISOString !== dateToIsoString }, {
 	  toISOString: dateToIsoString
@@ -33120,7 +33152,7 @@
 	}
 
 	// `String.prototype.repeat` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.repeat
+	// https://tc39.es/ecma262/#sec-string.prototype.repeat
 	_export({ target: 'String', proto: true }, {
 	  repeat: stringRepeat
 	});
@@ -33706,7 +33738,7 @@
 	});
 
 	// `Promise.prototype.finally` method
-	// https://tc39.github.io/ecma262/#sec-promise.prototype.finally
+	// https://tc39.es/ecma262/#sec-promise.prototype.finally
 	_export({ target: 'Promise', proto: true, real: true, forced: NON_GENERIC }, {
 	  'finally': function (onFinally) {
 	    var C = speciesConstructor(this, getBuiltIn('Promise'));
@@ -33731,14 +33763,14 @@
 	fixRegexpWellKnownSymbolLogic('search', 1, function (SEARCH, nativeSearch, maybeCallNative) {
 	  return [
 	    // `String.prototype.search` method
-	    // https://tc39.github.io/ecma262/#sec-string.prototype.search
+	    // https://tc39.es/ecma262/#sec-string.prototype.search
 	    function search(regexp) {
 	      var O = requireObjectCoercible(this);
 	      var searcher = regexp == undefined ? undefined : regexp[SEARCH];
 	      return searcher !== undefined ? searcher.call(regexp, O) : new RegExp(regexp)[SEARCH](String(O));
 	    },
 	    // `RegExp.prototype[@@search]` method
-	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@search
+	    // https://tc39.es/ecma262/#sec-regexp.prototype-@@search
 	    function (regexp) {
 	      var res = maybeCallNative(nativeSearch, regexp, this);
 	      if (res.done) return res.value;
@@ -35333,7 +35365,7 @@
 	var quot = /"/g;
 
 	// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
-	// https://tc39.github.io/ecma262/#sec-createhtml
+	// https://tc39.es/ecma262/#sec-createhtml
 	var createHtml = function (string, tag, attribute, value) {
 	  var S = String(requireObjectCoercible(string));
 	  var p1 = '<' + tag;
@@ -35351,74 +35383,10 @@
 	};
 
 	// `String.prototype.link` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.link
+	// https://tc39.es/ecma262/#sec-string.prototype.link
 	_export({ target: 'String', proto: true, forced: stringHtmlForced('link') }, {
 	  link: function link(url) {
 	    return createHtml(this, 'a', 'href', url);
-	  }
-	});
-
-	var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor.f;
-
-
-
-
-
-
-	var nativeEndsWith = ''.endsWith;
-	var min$8 = Math.min;
-
-	var CORRECT_IS_REGEXP_LOGIC = correctIsRegexpLogic('endsWith');
-	// https://github.com/zloirock/core-js/pull/702
-	var MDN_POLYFILL_BUG =  !CORRECT_IS_REGEXP_LOGIC && !!function () {
-	  var descriptor = getOwnPropertyDescriptor$4(String.prototype, 'endsWith');
-	  return descriptor && !descriptor.writable;
-	}();
-
-	// `String.prototype.endsWith` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.endswith
-	_export({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC }, {
-	  endsWith: function endsWith(searchString /* , endPosition = @length */) {
-	    var that = String(requireObjectCoercible(this));
-	    notARegexp(searchString);
-	    var endPosition = arguments.length > 1 ? arguments[1] : undefined;
-	    var len = toLength(that.length);
-	    var end = endPosition === undefined ? len : min$8(toLength(endPosition), len);
-	    var search = String(searchString);
-	    return nativeEndsWith
-	      ? nativeEndsWith.call(that, search, end)
-	      : that.slice(end - search.length, end) === search;
-	  }
-	});
-
-	var getOwnPropertyDescriptor$5 = objectGetOwnPropertyDescriptor.f;
-
-
-
-
-
-
-	var nativeStartsWith = ''.startsWith;
-	var min$9 = Math.min;
-
-	var CORRECT_IS_REGEXP_LOGIC$1 = correctIsRegexpLogic('startsWith');
-	// https://github.com/zloirock/core-js/pull/702
-	var MDN_POLYFILL_BUG$1 =  !CORRECT_IS_REGEXP_LOGIC$1 && !!function () {
-	  var descriptor = getOwnPropertyDescriptor$5(String.prototype, 'startsWith');
-	  return descriptor && !descriptor.writable;
-	}();
-
-	// `String.prototype.startsWith` method
-	// https://tc39.github.io/ecma262/#sec-string.prototype.startswith
-	_export({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG$1 && !CORRECT_IS_REGEXP_LOGIC$1 }, {
-	  startsWith: function startsWith(searchString /* , position = 0 */) {
-	    var that = String(requireObjectCoercible(this));
-	    notARegexp(searchString);
-	    var index = toLength(min$9(arguments.length > 1 ? arguments[1] : undefined, that.length));
-	    var search = String(searchString);
-	    return nativeStartsWith
-	      ? nativeStartsWith.call(that, search, index)
-	      : that.slice(index, index + search.length) === search;
 	  }
 	});
 
@@ -35432,7 +35400,8 @@
 	} : ''.trimEnd;
 
 	// `String.prototype.{ trimEnd, trimRight }` methods
-	// https://github.com/tc39/ecmascript-string-left-right-trim
+	// https://tc39.es/ecma262/#sec-string.prototype.trimend
+	// https://tc39.es/ecma262/#String.prototype.trimright
 	_export({ target: 'String', proto: true, forced: FORCED$e }, {
 	  trimEnd: trimEnd,
 	  trimRight: trimEnd
@@ -35896,11 +35865,24 @@
 	      var cap = this.rules.block.heading.exec(src);
 
 	      if (cap) {
+	        var text = cap[2].trim(); // remove trailing #s
+
+	        if (/#$/.test(text)) {
+	          var trimmed = rtrim$2(text, '#');
+
+	          if (this.options.pedantic) {
+	            text = trimmed.trim();
+	          } else if (!trimmed || / $/.test(trimmed)) {
+	            // CommonMark requires space before trailing #s
+	            text = trimmed.trim();
+	          }
+	        }
+
 	        return {
 	          type: 'heading',
 	          raw: cap[0],
 	          depth: cap[1].length,
-	          text: cap[2]
+	          text: text
 	        };
 	      }
 	    }
@@ -36053,12 +36035,14 @@
 	          } // Check for task list items
 
 
-	          istask = /^\[[ xX]\] /.test(item);
-	          ischecked = undefined;
+	          if (this.options.gfm) {
+	            istask = /^\[[ xX]\] /.test(item);
+	            ischecked = undefined;
 
-	          if (istask) {
-	            ischecked = item[1] !== ' ';
-	            item = item.replace(/^\[[ xX]\] +/, '');
+	            if (istask) {
+	              ischecked = item[1] !== ' ';
+	              item = item.replace(/^\[[ xX]\] +/, '');
+	            }
 	          }
 
 	          list.items.push({
@@ -36239,38 +36223,63 @@
 	      var cap = this.rules.inline.link.exec(src);
 
 	      if (cap) {
-	        var lastParenIndex = findClosingBracket$1(cap[2], '()');
+	        var trimmedUrl = cap[2].trim();
 
-	        if (lastParenIndex > -1) {
-	          var start = cap[0].indexOf('!') === 0 ? 5 : 4;
-	          var linkLen = start + cap[1].length + lastParenIndex;
-	          cap[2] = cap[2].substring(0, lastParenIndex);
-	          cap[0] = cap[0].substring(0, linkLen).trim();
-	          cap[3] = '';
+	        if (!this.options.pedantic && /^</.test(trimmedUrl)) {
+	          // commonmark requires matching angle brackets
+	          if (!/>$/.test(trimmedUrl)) {
+	            return;
+	          } // ending angle bracket cannot be escaped
+
+
+	          var rtrimSlash = rtrim$2(trimmedUrl.slice(0, -1), '\\');
+
+	          if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
+	            return;
+	          }
+	        } else {
+	          // find closing parenthesis
+	          var lastParenIndex = findClosingBracket$1(cap[2], '()');
+
+	          if (lastParenIndex > -1) {
+	            var start = cap[0].indexOf('!') === 0 ? 5 : 4;
+	            var linkLen = start + cap[1].length + lastParenIndex;
+	            cap[2] = cap[2].substring(0, lastParenIndex);
+	            cap[0] = cap[0].substring(0, linkLen).trim();
+	            cap[3] = '';
+	          }
 	        }
 
 	        var href = cap[2];
 	        var title = '';
 
 	        if (this.options.pedantic) {
+	          // split pedantic href and title
 	          var link = /^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(href);
 
 	          if (link) {
 	            href = link[1];
 	            title = link[3];
-	          } else {
-	            title = '';
 	          }
 	        } else {
 	          title = cap[3] ? cap[3].slice(1, -1) : '';
 	        }
 
-	        href = href.trim().replace(/^<([\s\S]*)>$/, '$1');
-	        var token = outputLink(cap, {
+	        href = href.trim();
+
+	        if (/^</.test(href)) {
+	          if (this.options.pedantic && !/>$/.test(trimmedUrl)) {
+	            // pedantic allows starting angle bracket without ending angle bracket
+	            href = href.slice(1);
+	          } else {
+	            href = href.slice(1, -1);
+	          }
+	        }
+
+	        return outputLink(cap, {
 	          href: href ? href.replace(this.rules.inline._escapes, '$1') : href,
 	          title: title ? title.replace(this.rules.inline._escapes, '$1') : title
 	        }, cap[0]);
-	        return token;
 	      }
 	    }
 	  }, {
@@ -36291,8 +36300,7 @@
 	          };
 	        }
 
-	        var token = outputLink(cap, link, cap[0]);
-	        return token;
+	        return outputLink(cap, link, cap[0]);
 	      }
 	    }
 	  }, {
@@ -36353,7 +36361,7 @@
 	      if (cap) {
 	        var text = cap[2].replace(/\n/g, ' ');
 	        var hasNonSpaceChars = /[^ ]/.test(text);
-	        var hasSpaceCharsOnBothEnds = text.startsWith(' ') && text.endsWith(' ');
+	        var hasSpaceCharsOnBothEnds = /^ /.test(text) && / $/.test(text);
 
 	        if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
 	          text = text.substring(1, text.length - 1);
@@ -36388,7 +36396,7 @@
 	        return {
 	          type: 'del',
 	          raw: cap[0],
-	          text: cap[1]
+	          text: cap[2]
 	        };
 	      }
 	    }
@@ -36501,7 +36509,7 @@
 	  code: /^( {4}[^\n]+\n*)+/,
 	  fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
 	  hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-	  heading: /^ {0,3}(#{1,6}) +([^\n]*?)(?: +#+)? *(?:\n+|$)/,
+	  heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
 	  blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
 	  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?! {0,3}bull )\n*|\s*$)/,
 	  html: '^ {0,3}(?:' // optional indentation
@@ -36572,7 +36580,7 @@
 	  html: edit$1('^ *(?:comment *(?:\\n|\\s*$)' + '|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)' // closed tag
 	  + '|<tag(?:"[^"]*"|\'[^\']*\'|\\s[^\'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))').replace('comment', block._comment).replace(/tag/g, '(?!(?:' + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub' + '|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)' + '\\b)\\w+(?!:|[^\\w\\s@]*@)\\b').getRegex(),
 	  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
-	  heading: /^ *(#{1,6}) *([^\n]+?) *(?:#+ *)?(?:\n+|$)/,
+	  heading: /^(#{1,6})(.*)(?:\n+|$)/,
 	  fences: noopTest$1,
 	  // fences not supported
 	  paragraph: edit$1(block.normal._paragraph).replace('hr', block.hr).replace('heading', ' *#{1,6} *[^\n]').replace('lheading', block.lheading).replace('blockquote', ' {0,3}>').replace('|fences', '').replace('|list', '').replace('|html', '').getRegex()
@@ -36644,7 +36652,7 @@
 	inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
 	inline.tag = edit$1(inline.tag).replace('comment', inline._comment).replace('attribute', inline._attribute).getRegex();
 	inline._label = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
-	inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/;
+	inline._href = /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/;
 	inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
 	inline.link = edit$1(inline.link).replace('label', inline._label).replace('href', inline._href).replace('title', inline._title).getRegex();
 	inline.reflink = edit$1(inline.reflink).replace('label', inline._label).getRegex();
@@ -36683,8 +36691,8 @@
 	  _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
 	  url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
 	  _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
-	  del: /^~+(?=\S)([\s\S]*?\S)~+/,
-	  text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
+	  del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
+	  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
 	});
 	inline.gfm.url = edit$1(inline.gfm.url, 'i').replace('email', inline.gfm._extended_email).getRegex();
 	/**
@@ -37032,11 +37040,11 @@
 	      var tokens = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 	      var inLink = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 	      var inRawBlock = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-	      var prevChar = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
 	      var token; // String with links masked to avoid interference with em and strong
 
 	      var maskedSrc = src;
-	      var match; // Mask out reflinks
+	      var match;
+	      var keepPrevChar, prevChar; // Mask out reflinks
 
 	      if (this.tokens.links) {
 	        var links = Object.keys(this.tokens.links);
@@ -37056,7 +37064,12 @@
 	      }
 
 	      while (src) {
-	        // escape
+	        if (!keepPrevChar) {
+	          prevChar = '';
+	        }
+
+	        keepPrevChar = false; // escape
+
 	        if (token = this.tokenizer.escape(src)) {
 	          src = src.substring(token.raw.length);
 	          tokens.push(token);
@@ -37152,6 +37165,7 @@
 	        if (token = this.tokenizer.inlineText(src, inRawBlock, smartypants)) {
 	          src = src.substring(token.raw.length);
 	          prevChar = token.raw.slice(-1);
+	          keepPrevChar = true;
 	          tokens.push(token);
 	          continue;
 	        }
@@ -40167,7 +40181,7 @@
 	});
 
 	// `Date.prototype.toJSON` method
-	// https://tc39.github.io/ecma262/#sec-date.prototype.tojson
+	// https://tc39.es/ecma262/#sec-date.prototype.tojson
 	_export({ target: 'Date', proto: true, forced: FORCED$f }, {
 	  // eslint-disable-next-line no-unused-vars
 	  toJSON: function toJSON(key) {
@@ -47196,1172 +47210,212 @@
 	  }
 	};
 
-	var helpers$1 = createCommonjsModule(function (module, exports) {
+	/**
+	 * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
+	 *
+	 * @name feature
+	 * @param {Geometry} geometry input geometry
+	 * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+	 * @param {Object} [options={}] Optional Parameters
+	 * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+	 * @param {string|number} [options.id] Identifier associated with the Feature
+	 * @returns {Feature} a GeoJSON Feature
+	 * @example
+	 * var geometry = {
+	 *   "type": "Point",
+	 *   "coordinates": [110, 50]
+	 * };
+	 *
+	 * var feature = turf.feature(geometry);
+	 *
+	 * //=feature
+	 */
 
-	  Object.defineProperty(exports, "__esModule", {
-	    value: true
-	  });
-	  /**
-	   * @module helpers
-	   */
+	function feature(geom, properties, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
 
-	  /**
-	   * Earth Radius used with the Harvesine formula and approximates using a spherical (non-ellipsoid) Earth.
-	   *
-	   * @memberof helpers
-	   * @type {number}
-	   */
-
-	  exports.earthRadius = 6371008.8;
-	  /**
-	   * Unit of measurement factors using a spherical (non-ellipsoid) earth radius.
-	   *
-	   * @memberof helpers
-	   * @type {Object}
-	   */
-
-	  exports.factors = {
-	    centimeters: exports.earthRadius * 100,
-	    centimetres: exports.earthRadius * 100,
-	    degrees: exports.earthRadius / 111325,
-	    feet: exports.earthRadius * 3.28084,
-	    inches: exports.earthRadius * 39.370,
-	    kilometers: exports.earthRadius / 1000,
-	    kilometres: exports.earthRadius / 1000,
-	    meters: exports.earthRadius,
-	    metres: exports.earthRadius,
-	    miles: exports.earthRadius / 1609.344,
-	    millimeters: exports.earthRadius * 1000,
-	    millimetres: exports.earthRadius * 1000,
-	    nauticalmiles: exports.earthRadius / 1852,
-	    radians: 1,
-	    yards: exports.earthRadius / 1.0936
+	  var feat = {
+	    type: "Feature"
 	  };
-	  /**
-	   * Units of measurement factors based on 1 meter.
-	   *
-	   * @memberof helpers
-	   * @type {Object}
-	   */
 
-	  exports.unitsFactors = {
-	    centimeters: 100,
-	    centimetres: 100,
-	    degrees: 1 / 111325,
-	    feet: 3.28084,
-	    inches: 39.370,
-	    kilometers: 1 / 1000,
-	    kilometres: 1 / 1000,
-	    meters: 1,
-	    metres: 1,
-	    miles: 1 / 1609.344,
-	    millimeters: 1000,
-	    millimetres: 1000,
-	    nauticalmiles: 1 / 1852,
-	    radians: 1 / exports.earthRadius,
-	    yards: 1 / 1.0936
+	  if (options.id === 0 || options.id) {
+	    feat.id = options.id;
+	  }
+
+	  if (options.bbox) {
+	    feat.bbox = options.bbox;
+	  }
+
+	  feat.properties = properties || {};
+	  feat.geometry = geom;
+	  return feat;
+	}
+	/**
+	 * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
+	 *
+	 * @name polygon
+	 * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
+	 * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+	 * @param {Object} [options={}] Optional Parameters
+	 * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+	 * @param {string|number} [options.id] Identifier associated with the Feature
+	 * @returns {Feature<Polygon>} Polygon Feature
+	 * @example
+	 * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
+	 *
+	 * //=polygon
+	 */
+
+	function polygon(coordinates, properties, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
+	    var ring = coordinates_1[_i];
+
+	    if (ring.length < 4) {
+	      throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
+	    }
+
+	    for (var j = 0; j < ring[ring.length - 1].length; j++) {
+	      // Check if first point of Polygon contains two numbers
+	      if (ring[ring.length - 1][j] !== ring[0][j]) {
+	        throw new Error("First and last Position are not equivalent.");
+	      }
+	    }
+	  }
+
+	  var geom = {
+	    type: "Polygon",
+	    coordinates: coordinates
 	  };
-	  /**
-	   * Area of measurement factors based on 1 square meter.
-	   *
-	   * @memberof helpers
-	   * @type {Object}
-	   */
+	  return feature(geom, properties, options);
+	}
+	/**
+	 * Creates a {@link LineString} {@link Feature} from an Array of Positions.
+	 *
+	 * @name lineString
+	 * @param {Array<Array<number>>} coordinates an array of Positions
+	 * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+	 * @param {Object} [options={}] Optional Parameters
+	 * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+	 * @param {string|number} [options.id] Identifier associated with the Feature
+	 * @returns {Feature<LineString>} LineString Feature
+	 * @example
+	 * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
+	 * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
+	 *
+	 * //=linestring1
+	 * //=linestring2
+	 */
 
-	  exports.areaFactors = {
-	    acres: 0.000247105,
-	    centimeters: 10000,
-	    centimetres: 10000,
-	    feet: 10.763910417,
-	    inches: 1550.003100006,
-	    kilometers: 0.000001,
-	    kilometres: 0.000001,
-	    meters: 1,
-	    metres: 1,
-	    miles: 3.86e-7,
-	    millimeters: 1000000,
-	    millimetres: 1000000,
-	    yards: 1.195990046
+	function lineString(coordinates, properties, options) {
+	  if (options === void 0) {
+	    options = {};
+	  }
+
+	  if (coordinates.length < 2) {
+	    throw new Error("coordinates must be an array of two or more positions");
+	  }
+
+	  var geom = {
+	    type: "LineString",
+	    coordinates: coordinates
 	  };
-	  /**
-	   * Wraps a GeoJSON {@link Geometry} in a GeoJSON {@link Feature}.
-	   *
-	   * @name feature
-	   * @param {Geometry} geometry input geometry
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature} a GeoJSON Feature
-	   * @example
-	   * var geometry = {
-	   *   "type": "Point",
-	   *   "coordinates": [110, 50]
-	   * };
-	   *
-	   * var feature = turf.feature(geometry);
-	   *
-	   * //=feature
-	   */
+	  return feature(geom, properties, options);
+	}
+	/**
+	 * Creates a {@link Feature<MultiLineString>} based on a
+	 * coordinate array. Properties can be added optionally.
+	 *
+	 * @name multiLineString
+	 * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
+	 * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+	 * @param {Object} [options={}] Optional Parameters
+	 * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+	 * @param {string|number} [options.id] Identifier associated with the Feature
+	 * @returns {Feature<MultiLineString>} a MultiLineString feature
+	 * @throws {Error} if no coordinates are passed
+	 * @example
+	 * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
+	 *
+	 * //=multiLine
+	 */
 
-	  function feature(geom, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var feat = {
-	      type: "Feature"
-	    };
-
-	    if (options.id === 0 || options.id) {
-	      feat.id = options.id;
-	    }
-
-	    if (options.bbox) {
-	      feat.bbox = options.bbox;
-	    }
-
-	    feat.properties = properties || {};
-	    feat.geometry = geom;
-	    return feat;
+	function multiLineString(coordinates, properties, options) {
+	  if (options === void 0) {
+	    options = {};
 	  }
 
-	  exports.feature = feature;
-	  /**
-	   * Creates a GeoJSON {@link Geometry} from a Geometry string type & coordinates.
-	   * For GeometryCollection type use `helpers.geometryCollection`
-	   *
-	   * @name geometry
-	   * @param {string} type Geometry Type
-	   * @param {Array<any>} coordinates Coordinates
-	   * @param {Object} [options={}] Optional Parameters
-	   * @returns {Geometry} a GeoJSON Geometry
-	   * @example
-	   * var type = "Point";
-	   * var coordinates = [110, 50];
-	   * var geometry = turf.geometry(type, coordinates);
-	   * // => geometry
-	   */
+	  var geom = {
+	    type: "MultiLineString",
+	    coordinates: coordinates
+	  };
+	  return feature(geom, properties, options);
+	}
+	/**
+	 * Creates a {@link Feature<MultiPolygon>} based on a
+	 * coordinate array. Properties can be added optionally.
+	 *
+	 * @name multiPolygon
+	 * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
+	 * @param {Object} [properties={}] an Object of key-value pairs to add as properties
+	 * @param {Object} [options={}] Optional Parameters
+	 * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
+	 * @param {string|number} [options.id] Identifier associated with the Feature
+	 * @returns {Feature<MultiPolygon>} a multipolygon feature
+	 * @throws {Error} if no coordinates are passed
+	 * @example
+	 * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
+	 *
+	 * //=multiPoly
+	 *
+	 */
 
-	  function geometry(type, coordinates, options) {
-
-	    switch (type) {
-	      case "Point":
-	        return point(coordinates).geometry;
-
-	      case "LineString":
-	        return lineString(coordinates).geometry;
-
-	      case "Polygon":
-	        return polygon(coordinates).geometry;
-
-	      case "MultiPoint":
-	        return multiPoint(coordinates).geometry;
-
-	      case "MultiLineString":
-	        return multiLineString(coordinates).geometry;
-
-	      case "MultiPolygon":
-	        return multiPolygon(coordinates).geometry;
-
-	      default:
-	        throw new Error(type + " is invalid");
-	    }
+	function multiPolygon(coordinates, properties, options) {
+	  if (options === void 0) {
+	    options = {};
 	  }
 
-	  exports.geometry = geometry;
-	  /**
-	   * Creates a {@link Point} {@link Feature} from a Position.
-	   *
-	   * @name point
-	   * @param {Array<number>} coordinates longitude, latitude position (each in decimal degrees)
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<Point>} a Point feature
-	   * @example
-	   * var point = turf.point([-75.343, 39.984]);
-	   *
-	   * //=point
-	   */
+	  var geom = {
+	    type: "MultiPolygon",
+	    coordinates: coordinates
+	  };
+	  return feature(geom, properties, options);
+	}
 
-	  function point(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
+	/**
+	 * Get Geometry from Feature or Geometry Object
+	 *
+	 * @param {Feature|Geometry} geojson GeoJSON Feature or Geometry Object
+	 * @returns {Geometry|null} GeoJSON Geometry Object
+	 * @throws {Error} if geojson is not a Feature or Geometry Object
+	 * @example
+	 * var point = {
+	 *   "type": "Feature",
+	 *   "properties": {},
+	 *   "geometry": {
+	 *     "type": "Point",
+	 *     "coordinates": [110, 40]
+	 *   }
+	 * }
+	 * var geom = turf.getGeom(point)
+	 * //={"type": "Point", "coordinates": [110, 40]}
+	 */
 
-	    var geom = {
-	      type: "Point",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
+	function getGeom(geojson) {
+	  if (geojson.type === "Feature") {
+	    return geojson.geometry;
 	  }
 
-	  exports.point = point;
-	  /**
-	   * Creates a {@link Point} {@link FeatureCollection} from an Array of Point coordinates.
-	   *
-	   * @name points
-	   * @param {Array<Array<number>>} coordinates an array of Points
-	   * @param {Object} [properties={}] Translate these properties to each Feature
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
-	   * associated with the FeatureCollection
-	   * @param {string|number} [options.id] Identifier associated with the FeatureCollection
-	   * @returns {FeatureCollection<Point>} Point Feature
-	   * @example
-	   * var points = turf.points([
-	   *   [-75, 39],
-	   *   [-80, 45],
-	   *   [-78, 50]
-	   * ]);
-	   *
-	   * //=points
-	   */
+	  return geojson;
+	}
 
-	  function points(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    return featureCollection(coordinates.map(function (coords) {
-	      return point(coords, properties);
-	    }), options);
-	  }
-
-	  exports.points = points;
-	  /**
-	   * Creates a {@link Polygon} {@link Feature} from an Array of LinearRings.
-	   *
-	   * @name polygon
-	   * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<Polygon>} Polygon Feature
-	   * @example
-	   * var polygon = turf.polygon([[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]], { name: 'poly1' });
-	   *
-	   * //=polygon
-	   */
-
-	  function polygon(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    for (var _i = 0, coordinates_1 = coordinates; _i < coordinates_1.length; _i++) {
-	      var ring = coordinates_1[_i];
-
-	      if (ring.length < 4) {
-	        throw new Error("Each LinearRing of a Polygon must have 4 or more Positions.");
-	      }
-
-	      for (var j = 0; j < ring[ring.length - 1].length; j++) {
-	        // Check if first point of Polygon contains two numbers
-	        if (ring[ring.length - 1][j] !== ring[0][j]) {
-	          throw new Error("First and last Position are not equivalent.");
-	        }
-	      }
-	    }
-
-	    var geom = {
-	      type: "Polygon",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.polygon = polygon;
-	  /**
-	   * Creates a {@link Polygon} {@link FeatureCollection} from an Array of Polygon coordinates.
-	   *
-	   * @name polygons
-	   * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygon coordinates
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the FeatureCollection
-	   * @returns {FeatureCollection<Polygon>} Polygon FeatureCollection
-	   * @example
-	   * var polygons = turf.polygons([
-	   *   [[[-5, 52], [-4, 56], [-2, 51], [-7, 54], [-5, 52]]],
-	   *   [[[-15, 42], [-14, 46], [-12, 41], [-17, 44], [-15, 42]]],
-	   * ]);
-	   *
-	   * //=polygons
-	   */
-
-	  function polygons(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    return featureCollection(coordinates.map(function (coords) {
-	      return polygon(coords, properties);
-	    }), options);
-	  }
-
-	  exports.polygons = polygons;
-	  /**
-	   * Creates a {@link LineString} {@link Feature} from an Array of Positions.
-	   *
-	   * @name lineString
-	   * @param {Array<Array<number>>} coordinates an array of Positions
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<LineString>} LineString Feature
-	   * @example
-	   * var linestring1 = turf.lineString([[-24, 63], [-23, 60], [-25, 65], [-20, 69]], {name: 'line 1'});
-	   * var linestring2 = turf.lineString([[-14, 43], [-13, 40], [-15, 45], [-10, 49]], {name: 'line 2'});
-	   *
-	   * //=linestring1
-	   * //=linestring2
-	   */
-
-	  function lineString(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    if (coordinates.length < 2) {
-	      throw new Error("coordinates must be an array of two or more positions");
-	    }
-
-	    var geom = {
-	      type: "LineString",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.lineString = lineString;
-	  /**
-	   * Creates a {@link LineString} {@link FeatureCollection} from an Array of LineString coordinates.
-	   *
-	   * @name lineStrings
-	   * @param {Array<Array<Array<number>>>} coordinates an array of LinearRings
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north]
-	   * associated with the FeatureCollection
-	   * @param {string|number} [options.id] Identifier associated with the FeatureCollection
-	   * @returns {FeatureCollection<LineString>} LineString FeatureCollection
-	   * @example
-	   * var linestrings = turf.lineStrings([
-	   *   [[-24, 63], [-23, 60], [-25, 65], [-20, 69]],
-	   *   [[-14, 43], [-13, 40], [-15, 45], [-10, 49]]
-	   * ]);
-	   *
-	   * //=linestrings
-	   */
-
-	  function lineStrings(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    return featureCollection(coordinates.map(function (coords) {
-	      return lineString(coords, properties);
-	    }), options);
-	  }
-
-	  exports.lineStrings = lineStrings;
-	  /**
-	   * Takes one or more {@link Feature|Features} and creates a {@link FeatureCollection}.
-	   *
-	   * @name featureCollection
-	   * @param {Feature[]} features input features
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {FeatureCollection} FeatureCollection of Features
-	   * @example
-	   * var locationA = turf.point([-75.343, 39.984], {name: 'Location A'});
-	   * var locationB = turf.point([-75.833, 39.284], {name: 'Location B'});
-	   * var locationC = turf.point([-75.534, 39.123], {name: 'Location C'});
-	   *
-	   * var collection = turf.featureCollection([
-	   *   locationA,
-	   *   locationB,
-	   *   locationC
-	   * ]);
-	   *
-	   * //=collection
-	   */
-
-	  function featureCollection(features, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var fc = {
-	      type: "FeatureCollection"
-	    };
-
-	    if (options.id) {
-	      fc.id = options.id;
-	    }
-
-	    if (options.bbox) {
-	      fc.bbox = options.bbox;
-	    }
-
-	    fc.features = features;
-	    return fc;
-	  }
-
-	  exports.featureCollection = featureCollection;
-	  /**
-	   * Creates a {@link Feature<MultiLineString>} based on a
-	   * coordinate array. Properties can be added optionally.
-	   *
-	   * @name multiLineString
-	   * @param {Array<Array<Array<number>>>} coordinates an array of LineStrings
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<MultiLineString>} a MultiLineString feature
-	   * @throws {Error} if no coordinates are passed
-	   * @example
-	   * var multiLine = turf.multiLineString([[[0,0],[10,10]]]);
-	   *
-	   * //=multiLine
-	   */
-
-	  function multiLineString(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var geom = {
-	      type: "MultiLineString",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.multiLineString = multiLineString;
-	  /**
-	   * Creates a {@link Feature<MultiPoint>} based on a
-	   * coordinate array. Properties can be added optionally.
-	   *
-	   * @name multiPoint
-	   * @param {Array<Array<number>>} coordinates an array of Positions
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<MultiPoint>} a MultiPoint feature
-	   * @throws {Error} if no coordinates are passed
-	   * @example
-	   * var multiPt = turf.multiPoint([[0,0],[10,10]]);
-	   *
-	   * //=multiPt
-	   */
-
-	  function multiPoint(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var geom = {
-	      type: "MultiPoint",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.multiPoint = multiPoint;
-	  /**
-	   * Creates a {@link Feature<MultiPolygon>} based on a
-	   * coordinate array. Properties can be added optionally.
-	   *
-	   * @name multiPolygon
-	   * @param {Array<Array<Array<Array<number>>>>} coordinates an array of Polygons
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<MultiPolygon>} a multipolygon feature
-	   * @throws {Error} if no coordinates are passed
-	   * @example
-	   * var multiPoly = turf.multiPolygon([[[[0,0],[0,10],[10,10],[10,0],[0,0]]]]);
-	   *
-	   * //=multiPoly
-	   *
-	   */
-
-	  function multiPolygon(coordinates, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var geom = {
-	      type: "MultiPolygon",
-	      coordinates: coordinates
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.multiPolygon = multiPolygon;
-	  /**
-	   * Creates a {@link Feature<GeometryCollection>} based on a
-	   * coordinate array. Properties can be added optionally.
-	   *
-	   * @name geometryCollection
-	   * @param {Array<Geometry>} geometries an array of GeoJSON Geometries
-	   * @param {Object} [properties={}] an Object of key-value pairs to add as properties
-	   * @param {Object} [options={}] Optional Parameters
-	   * @param {Array<number>} [options.bbox] Bounding Box Array [west, south, east, north] associated with the Feature
-	   * @param {string|number} [options.id] Identifier associated with the Feature
-	   * @returns {Feature<GeometryCollection>} a GeoJSON GeometryCollection Feature
-	   * @example
-	   * var pt = turf.geometry("Point", [100, 0]);
-	   * var line = turf.geometry("LineString", [[101, 0], [102, 1]]);
-	   * var collection = turf.geometryCollection([pt, line]);
-	   *
-	   * // => collection
-	   */
-
-	  function geometryCollection(geometries, properties, options) {
-	    if (options === void 0) {
-	      options = {};
-	    }
-
-	    var geom = {
-	      type: "GeometryCollection",
-	      geometries: geometries
-	    };
-	    return feature(geom, properties, options);
-	  }
-
-	  exports.geometryCollection = geometryCollection;
-	  /**
-	   * Round number to precision
-	   *
-	   * @param {number} num Number
-	   * @param {number} [precision=0] Precision
-	   * @returns {number} rounded number
-	   * @example
-	   * turf.round(120.4321)
-	   * //=120
-	   *
-	   * turf.round(120.4321, 2)
-	   * //=120.43
-	   */
-
-	  function round(num, precision) {
-	    if (precision === void 0) {
-	      precision = 0;
-	    }
-
-	    if (precision && !(precision >= 0)) {
-	      throw new Error("precision must be a positive number");
-	    }
-
-	    var multiplier = Math.pow(10, precision || 0);
-	    return Math.round(num * multiplier) / multiplier;
-	  }
-
-	  exports.round = round;
-	  /**
-	   * Convert a distance measurement (assuming a spherical Earth) from radians to a more friendly unit.
-	   * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
-	   *
-	   * @name radiansToLength
-	   * @param {number} radians in radians across the sphere
-	   * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
-	   * meters, kilometres, kilometers.
-	   * @returns {number} distance
-	   */
-
-	  function radiansToLength(radians, units) {
-	    if (units === void 0) {
-	      units = "kilometers";
-	    }
-
-	    var factor = exports.factors[units];
-
-	    if (!factor) {
-	      throw new Error(units + " units is invalid");
-	    }
-
-	    return radians * factor;
-	  }
-
-	  exports.radiansToLength = radiansToLength;
-	  /**
-	   * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians
-	   * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
-	   *
-	   * @name lengthToRadians
-	   * @param {number} distance in real units
-	   * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
-	   * meters, kilometres, kilometers.
-	   * @returns {number} radians
-	   */
-
-	  function lengthToRadians(distance, units) {
-	    if (units === void 0) {
-	      units = "kilometers";
-	    }
-
-	    var factor = exports.factors[units];
-
-	    if (!factor) {
-	      throw new Error(units + " units is invalid");
-	    }
-
-	    return distance / factor;
-	  }
-
-	  exports.lengthToRadians = lengthToRadians;
-	  /**
-	   * Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees
-	   * Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
-	   *
-	   * @name lengthToDegrees
-	   * @param {number} distance in real units
-	   * @param {string} [units="kilometers"] can be degrees, radians, miles, or kilometers inches, yards, metres,
-	   * meters, kilometres, kilometers.
-	   * @returns {number} degrees
-	   */
-
-	  function lengthToDegrees(distance, units) {
-	    return radiansToDegrees(lengthToRadians(distance, units));
-	  }
-
-	  exports.lengthToDegrees = lengthToDegrees;
-	  /**
-	   * Converts any bearing angle from the north line direction (positive clockwise)
-	   * and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
-	   *
-	   * @name bearingToAzimuth
-	   * @param {number} bearing angle, between -180 and +180 degrees
-	   * @returns {number} angle between 0 and 360 degrees
-	   */
-
-	  function bearingToAzimuth(bearing) {
-	    var angle = bearing % 360;
-
-	    if (angle < 0) {
-	      angle += 360;
-	    }
-
-	    return angle;
-	  }
-
-	  exports.bearingToAzimuth = bearingToAzimuth;
-	  /**
-	   * Converts an angle in radians to degrees
-	   *
-	   * @name radiansToDegrees
-	   * @param {number} radians angle in radians
-	   * @returns {number} degrees between 0 and 360 degrees
-	   */
-
-	  function radiansToDegrees(radians) {
-	    var degrees = radians % (2 * Math.PI);
-	    return degrees * 180 / Math.PI;
-	  }
-
-	  exports.radiansToDegrees = radiansToDegrees;
-	  /**
-	   * Converts an angle in degrees to radians
-	   *
-	   * @name degreesToRadians
-	   * @param {number} degrees angle between 0 and 360 degrees
-	   * @returns {number} angle in radians
-	   */
-
-	  function degreesToRadians(degrees) {
-	    var radians = degrees % 360;
-	    return radians * Math.PI / 180;
-	  }
-
-	  exports.degreesToRadians = degreesToRadians;
-	  /**
-	   * Converts a length to the requested unit.
-	   * Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
-	   *
-	   * @param {number} length to be converted
-	   * @param {Units} [originalUnit="kilometers"] of the length
-	   * @param {Units} [finalUnit="kilometers"] returned unit
-	   * @returns {number} the converted length
-	   */
-
-	  function convertLength(length, originalUnit, finalUnit) {
-	    if (originalUnit === void 0) {
-	      originalUnit = "kilometers";
-	    }
-
-	    if (finalUnit === void 0) {
-	      finalUnit = "kilometers";
-	    }
-
-	    if (!(length >= 0)) {
-	      throw new Error("length must be a positive number");
-	    }
-
-	    return radiansToLength(lengthToRadians(length, originalUnit), finalUnit);
-	  }
-
-	  exports.convertLength = convertLength;
-	  /**
-	   * Converts a area to the requested unit.
-	   * Valid units: kilometers, kilometres, meters, metres, centimetres, millimeters, acres, miles, yards, feet, inches
-	   * @param {number} area to be converted
-	   * @param {Units} [originalUnit="meters"] of the distance
-	   * @param {Units} [finalUnit="kilometers"] returned unit
-	   * @returns {number} the converted distance
-	   */
-
-	  function convertArea(area, originalUnit, finalUnit) {
-	    if (originalUnit === void 0) {
-	      originalUnit = "meters";
-	    }
-
-	    if (finalUnit === void 0) {
-	      finalUnit = "kilometers";
-	    }
-
-	    if (!(area >= 0)) {
-	      throw new Error("area must be a positive number");
-	    }
-
-	    var startFactor = exports.areaFactors[originalUnit];
-
-	    if (!startFactor) {
-	      throw new Error("invalid original units");
-	    }
-
-	    var finalFactor = exports.areaFactors[finalUnit];
-
-	    if (!finalFactor) {
-	      throw new Error("invalid final units");
-	    }
-
-	    return area / startFactor * finalFactor;
-	  }
-
-	  exports.convertArea = convertArea;
-	  /**
-	   * isNumber
-	   *
-	   * @param {*} num Number to validate
-	   * @returns {boolean} true/false
-	   * @example
-	   * turf.isNumber(123)
-	   * //=true
-	   * turf.isNumber('foo')
-	   * //=false
-	   */
-
-	  function isNumber(num) {
-	    return !isNaN(num) && num !== null && !Array.isArray(num) && !/^\s*$/.test(num);
-	  }
-
-	  exports.isNumber = isNumber;
-	  /**
-	   * isObject
-	   *
-	   * @param {*} input variable to validate
-	   * @returns {boolean} true/false
-	   * @example
-	   * turf.isObject({elevation: 10})
-	   * //=true
-	   * turf.isObject('foo')
-	   * //=false
-	   */
-
-	  function isObject(input) {
-	    return !!input && input.constructor === Object;
-	  }
-
-	  exports.isObject = isObject;
-	  /**
-	   * Validate BBox
-	   *
-	   * @private
-	   * @param {Array<number>} bbox BBox to validate
-	   * @returns {void}
-	   * @throws Error if BBox is not valid
-	   * @example
-	   * validateBBox([-180, -40, 110, 50])
-	   * //=OK
-	   * validateBBox([-180, -40])
-	   * //=Error
-	   * validateBBox('Foo')
-	   * //=Error
-	   * validateBBox(5)
-	   * //=Error
-	   * validateBBox(null)
-	   * //=Error
-	   * validateBBox(undefined)
-	   * //=Error
-	   */
-
-	  function validateBBox(bbox) {
-	    if (!bbox) {
-	      throw new Error("bbox is required");
-	    }
-
-	    if (!Array.isArray(bbox)) {
-	      throw new Error("bbox must be an Array");
-	    }
-
-	    if (bbox.length !== 4 && bbox.length !== 6) {
-	      throw new Error("bbox must be an Array of 4 or 6 numbers");
-	    }
-
-	    bbox.forEach(function (num) {
-	      if (!isNumber(num)) {
-	        throw new Error("bbox must only contain numbers");
-	      }
-	    });
-	  }
-
-	  exports.validateBBox = validateBBox;
-	  /**
-	   * Validate Id
-	   *
-	   * @private
-	   * @param {string|number} id Id to validate
-	   * @returns {void}
-	   * @throws Error if Id is not valid
-	   * @example
-	   * validateId([-180, -40, 110, 50])
-	   * //=Error
-	   * validateId([-180, -40])
-	   * //=Error
-	   * validateId('Foo')
-	   * //=OK
-	   * validateId(5)
-	   * //=OK
-	   * validateId(null)
-	   * //=Error
-	   * validateId(undefined)
-	   * //=Error
-	   */
-
-	  function validateId(id) {
-	    if (!id) {
-	      throw new Error("id is required");
-	    }
-
-	    if (["string", "number"].indexOf(_typeof(id)) === -1) {
-	      throw new Error("id must be a number or a string");
-	    }
-	  }
-
-	  exports.validateId = validateId; // Deprecated methods
-
-	  function radians2degrees() {
-	    throw new Error("method has been renamed to `radiansToDegrees`");
-	  }
-
-	  exports.radians2degrees = radians2degrees;
-
-	  function degrees2radians() {
-	    throw new Error("method has been renamed to `degreesToRadians`");
-	  }
-
-	  exports.degrees2radians = degrees2radians;
-
-	  function distanceToDegrees() {
-	    throw new Error("method has been renamed to `lengthToDegrees`");
-	  }
-
-	  exports.distanceToDegrees = distanceToDegrees;
-
-	  function distanceToRadians() {
-	    throw new Error("method has been renamed to `lengthToRadians`");
-	  }
-
-	  exports.distanceToRadians = distanceToRadians;
-
-	  function radiansToDistance() {
-	    throw new Error("method has been renamed to `radiansToLength`");
-	  }
-
-	  exports.radiansToDistance = radiansToDistance;
-
-	  function bearingToAngle() {
-	    throw new Error("method has been renamed to `bearingToAzimuth`");
-	  }
-
-	  exports.bearingToAngle = bearingToAngle;
-
-	  function convertDistance() {
-	    throw new Error("method has been renamed to `convertLength`");
-	  }
-
-	  exports.convertDistance = convertDistance;
-	});
-
-	var invariant = createCommonjsModule(function (module, exports) {
-
-	  Object.defineProperty(exports, "__esModule", {
-	    value: true
-	  });
-	  /**
-	   * Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
-	   *
-	   * @name getCoord
-	   * @param {Array<number>|Geometry<Point>|Feature<Point>} coord GeoJSON Point or an Array of numbers
-	   * @returns {Array<number>} coordinates
-	   * @example
-	   * var pt = turf.point([10, 10]);
-	   *
-	   * var coord = turf.getCoord(pt);
-	   * //= [10, 10]
-	   */
-
-	  function getCoord(coord) {
-	    if (!coord) {
-	      throw new Error("coord is required");
-	    }
-
-	    if (!Array.isArray(coord)) {
-	      if (coord.type === "Feature" && coord.geometry !== null && coord.geometry.type === "Point") {
-	        return coord.geometry.coordinates;
-	      }
-
-	      if (coord.type === "Point") {
-	        return coord.coordinates;
-	      }
-	    }
-
-	    if (Array.isArray(coord) && coord.length >= 2 && !Array.isArray(coord[0]) && !Array.isArray(coord[1])) {
-	      return coord;
-	    }
-
-	    throw new Error("coord must be GeoJSON Point or an Array of numbers");
-	  }
-
-	  exports.getCoord = getCoord;
-	  /**
-	   * Unwrap coordinates from a Feature, Geometry Object or an Array
-	   *
-	   * @name getCoords
-	   * @param {Array<any>|Geometry|Feature} coords Feature, Geometry Object or an Array
-	   * @returns {Array<any>} coordinates
-	   * @example
-	   * var poly = turf.polygon([[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]);
-	   *
-	   * var coords = turf.getCoords(poly);
-	   * //= [[[119.32, -8.7], [119.55, -8.69], [119.51, -8.54], [119.32, -8.7]]]
-	   */
-
-	  function getCoords(coords) {
-	    if (Array.isArray(coords)) {
-	      return coords;
-	    } // Feature
-
-
-	    if (coords.type === "Feature") {
-	      if (coords.geometry !== null) {
-	        return coords.geometry.coordinates;
-	      }
-	    } else {
-	      // Geometry
-	      if (coords.coordinates) {
-	        return coords.coordinates;
-	      }
-	    }
-
-	    throw new Error("coords must be GeoJSON Feature, Geometry Object or an Array");
-	  }
-
-	  exports.getCoords = getCoords;
-	  /**
-	   * Checks if coordinates contains a number
-	   *
-	   * @name containsNumber
-	   * @param {Array<any>} coordinates GeoJSON Coordinates
-	   * @returns {boolean} true if Array contains a number
-	   */
-
-	  function containsNumber(coordinates) {
-	    if (coordinates.length > 1 && helpers$1.isNumber(coordinates[0]) && helpers$1.isNumber(coordinates[1])) {
-	      return true;
-	    }
-
-	    if (Array.isArray(coordinates[0]) && coordinates[0].length) {
-	      return containsNumber(coordinates[0]);
-	    }
-
-	    throw new Error("coordinates must only contain numbers");
-	  }
-
-	  exports.containsNumber = containsNumber;
-	  /**
-	   * Enforce expectations about types of GeoJSON objects for Turf.
-	   *
-	   * @name geojsonType
-	   * @param {GeoJSON} value any GeoJSON object
-	   * @param {string} type expected GeoJSON type
-	   * @param {string} name name of calling function
-	   * @throws {Error} if value is not the expected type.
-	   */
-
-	  function geojsonType(value, type, name) {
-	    if (!type || !name) {
-	      throw new Error("type and name required");
-	    }
-
-	    if (!value || value.type !== type) {
-	      throw new Error("Invalid input to " + name + ": must be a " + type + ", given " + value.type);
-	    }
-	  }
-
-	  exports.geojsonType = geojsonType;
-	  /**
-	   * Enforce expectations about types of {@link Feature} inputs for Turf.
-	   * Internally this uses {@link geojsonType} to judge geometry types.
-	   *
-	   * @name featureOf
-	   * @param {Feature} feature a feature with an expected geometry type
-	   * @param {string} type expected GeoJSON type
-	   * @param {string} name name of calling function
-	   * @throws {Error} error if value is not the expected type.
-	   */
-
-	  function featureOf(feature, type, name) {
-	    if (!feature) {
-	      throw new Error("No feature passed");
-	    }
-
-	    if (!name) {
-	      throw new Error(".featureOf() requires a name");
-	    }
-
-	    if (!feature || feature.type !== "Feature" || !feature.geometry) {
-	      throw new Error("Invalid input to " + name + ", Feature with geometry required");
-	    }
-
-	    if (!feature.geometry || feature.geometry.type !== type) {
-	      throw new Error("Invalid input to " + name + ": must be a " + type + ", given " + feature.geometry.type);
-	    }
-	  }
-
-	  exports.featureOf = featureOf;
-	  /**
-	   * Enforce expectations about types of {@link FeatureCollection} inputs for Turf.
-	   * Internally this uses {@link geojsonType} to judge geometry types.
-	   *
-	   * @name collectionOf
-	   * @param {FeatureCollection} featureCollection a FeatureCollection for which features will be judged
-	   * @param {string} type expected GeoJSON type
-	   * @param {string} name name of calling function
-	   * @throws {Error} if value is not the expected type.
-	   */
-
-	  function collectionOf(featureCollection, type, name) {
-	    if (!featureCollection) {
-	      throw new Error("No featureCollection passed");
-	    }
-
-	    if (!name) {
-	      throw new Error(".collectionOf() requires a name");
-	    }
-
-	    if (!featureCollection || featureCollection.type !== "FeatureCollection") {
-	      throw new Error("Invalid input to " + name + ", FeatureCollection required");
-	    }
-
-	    for (var _i = 0, _a = featureCollection.features; _i < _a.length; _i++) {
-	      var feature = _a[_i];
-
-	      if (!feature || feature.type !== "Feature" || !feature.geometry) {
-	        throw new Error("Invalid input to " + name + ", Feature with geometry required");
-	      }
-
-	      if (!feature.geometry || feature.geometry.type !== type) {
-	        throw new Error("Invalid input to " + name + ": must be a " + type + ", given " + feature.geometry.type);
-	      }
-	    }
-	  }
-
-	  exports.collectionOf = collectionOf;
-	  /**
-	   * Get Geometry from Feature or Geometry Object
-	   *
-	   * @param {Feature|Geometry} geojson GeoJSON Feature or Geometry Object
-	   * @returns {Geometry|null} GeoJSON Geometry Object
-	   * @throws {Error} if geojson is not a Feature or Geometry Object
-	   * @example
-	   * var point = {
-	   *   "type": "Feature",
-	   *   "properties": {},
-	   *   "geometry": {
-	   *     "type": "Point",
-	   *     "coordinates": [110, 40]
-	   *   }
-	   * }
-	   * var geom = turf.getGeom(point)
-	   * //={"type": "Point", "coordinates": [110, 40]}
-	   */
-
-	  function getGeom(geojson) {
-	    if (geojson.type === "Feature") {
-	      return geojson.geometry;
-	    }
-
-	    return geojson;
-	  }
-
-	  exports.getGeom = getGeom;
-	  /**
-	   * Get GeoJSON object's type, Geometry type is prioritize.
-	   *
-	   * @param {GeoJSON} geojson GeoJSON object
-	   * @param {string} [name="geojson"] name of the variable to display in error message
-	   * @returns {string} GeoJSON type
-	   * @example
-	   * var point = {
-	   *   "type": "Feature",
-	   *   "properties": {},
-	   *   "geometry": {
-	   *     "type": "Point",
-	   *     "coordinates": [110, 40]
-	   *   }
-	   * }
-	   * var geom = turf.getType(point)
-	   * //="Point"
-	   */
-
-	  function getType(geojson, name) {
-	    if (geojson.type === "FeatureCollection") {
-	      return "FeatureCollection";
-	    }
-
-	    if (geojson.type === "GeometryCollection") {
-	      return "GeometryCollection";
-	    }
-
-	    if (geojson.type === "Feature" && geojson.geometry !== null) {
-	      return geojson.geometry.type;
-	    }
-
-	    return geojson.type;
-	  }
-
-	  exports.getType = getType;
-	});
-
-	var lineclip_1 = lineclip;
-	var _default = lineclip;
-	lineclip.polyline = lineclip;
-	lineclip.polygon = polygonclip; // Cohen-Sutherland line clippign algorithm, adapted to efficiently
+	// Cohen-Sutherland line clippign algorithm, adapted to efficiently
 	// handle polylines rather than just segments
-
 	function lineclip(points, bbox, result) {
 	  var len = points.length,
 	      codeA = bitCode(points[0], bbox),
@@ -48418,7 +47472,6 @@
 	  return result;
 	} // Sutherland-Hodgeman polygon clipping algorithm
 
-
 	function polygonclip(points, bbox) {
 	  var result, edge, prev, prevInside, i, p, inside; // clip against each side of the clip rectangle
 
@@ -48445,13 +47498,12 @@
 	  return result;
 	} // intersect a segment against one of the 4 lines that make up the bbox
 
-
 	function intersect(a, b, edge, bbox) {
-	  return edge & 8 ? [a[0] + (b[0] - a[0]) * (bbox[3] - a[1]) / (b[1] - a[1]), bbox[3]] : // top
-	  edge & 4 ? [a[0] + (b[0] - a[0]) * (bbox[1] - a[1]) / (b[1] - a[1]), bbox[1]] : // bottom
-	  edge & 2 ? [bbox[2], a[1] + (b[1] - a[1]) * (bbox[2] - a[0]) / (b[0] - a[0])] : // right
-	  edge & 1 ? [bbox[0], a[1] + (b[1] - a[1]) * (bbox[0] - a[0]) / (b[0] - a[0])] : // left
-	  null;
+	  return edge & 8 ? [a[0] + (b[0] - a[0]) * (bbox[3] - a[1]) / (b[1] - a[1]), bbox[3]] // top
+	  : edge & 4 ? [a[0] + (b[0] - a[0]) * (bbox[1] - a[1]) / (b[1] - a[1]), bbox[1]] // bottom
+	  : edge & 2 ? [bbox[2], a[1] + (b[1] - a[1]) * (bbox[2] - a[0]) / (b[0] - a[0])] // right
+	  : edge & 1 ? [bbox[0], a[1] + (b[1] - a[1]) * (bbox[0] - a[0]) / (b[0] - a[0])] // left
+	  : null;
 	} // bit code reflects the point position relative to the bbox:
 	//         left  mid  right
 	//    top  1001  1000  1010
@@ -48469,107 +47521,84 @@
 
 	  return code;
 	}
-	lineclip_1["default"] = _default;
 
-	var bboxClip_1 = createCommonjsModule(function (module, exports) {
+	/**
+	 * Takes a {@link Feature} and a bbox and clips the feature to the bbox using
+	 * [lineclip](https://github.com/mapbox/lineclip).
+	 * May result in degenerate edges when clipping Polygons.
+	 *
+	 * @name bboxClip
+	 * @param {Feature<LineString|MultiLineString|Polygon|MultiPolygon>} feature feature to clip to the bbox
+	 * @param {BBox} bbox extent in [minX, minY, maxX, maxY] order
+	 * @returns {Feature<LineString|MultiLineString|Polygon|MultiPolygon>} clipped Feature
+	 * @example
+	 * var bbox = [0, 0, 10, 10];
+	 * var poly = turf.polygon([[[2, 2], [8, 4], [12, 8], [3, 7], [2, 2]]]);
+	 *
+	 * var clipped = turf.bboxClip(poly, bbox);
+	 *
+	 * //addToMap
+	 * var addToMap = [bbox, poly, clipped]
+	 */
 
-	  var __importStar = commonjsGlobal && commonjsGlobal.__importStar || function (mod) {
-	    if (mod && mod.__esModule) return mod;
-	    var result = {};
-	    if (mod != null) for (var k in mod) {
-	      if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-	    }
-	    result["default"] = mod;
-	    return result;
-	  };
+	function bboxClip(feature, bbox) {
+	  var geom = getGeom(feature);
+	  var type = geom.type;
+	  var properties = feature.type === "Feature" ? feature.properties : {};
+	  var coords = geom.coordinates;
 
-	  Object.defineProperty(exports, "__esModule", {
-	    value: true
-	  });
+	  switch (type) {
+	    case "LineString":
+	    case "MultiLineString":
+	      var lines_1 = [];
 
-	  var lineclip = __importStar(lineclip_1);
-	  /**
-	   * Takes a {@link Feature} and a bbox and clips the feature to the bbox using
-	   * [lineclip](https://github.com/mapbox/lineclip).
-	   * May result in degenerate edges when clipping Polygons.
-	   *
-	   * @name bboxClip
-	   * @param {Feature<LineString|MultiLineString|Polygon|MultiPolygon>} feature feature to clip to the bbox
-	   * @param {BBox} bbox extent in [minX, minY, maxX, maxY] order
-	   * @returns {Feature<LineString|MultiLineString|Polygon|MultiPolygon>} clipped Feature
-	   * @example
-	   * var bbox = [0, 0, 10, 10];
-	   * var poly = turf.polygon([[[2, 2], [8, 4], [12, 8], [3, 7], [2, 2]]]);
-	   *
-	   * var clipped = turf.bboxClip(poly, bbox);
-	   *
-	   * //addToMap
-	   * var addToMap = [bbox, poly, clipped]
-	   */
+	      if (type === "LineString") {
+	        coords = [coords];
+	      }
 
+	      coords.forEach(function (line) {
+	        lineclip(line, bbox, lines_1);
+	      });
 
-	  function bboxClip(feature, bbox) {
-	    var geom = invariant.getGeom(feature);
-	    var type = geom.type;
-	    var properties = feature.type === "Feature" ? feature.properties : {};
-	    var coords = geom.coordinates;
+	      if (lines_1.length === 1) {
+	        return lineString(lines_1[0], properties);
+	      }
 
-	    switch (type) {
-	      case "LineString":
-	      case "MultiLineString":
-	        var lines_1 = [];
+	      return multiLineString(lines_1, properties);
 
-	        if (type === "LineString") {
-	          coords = [coords];
-	        }
+	    case "Polygon":
+	      return polygon(clipPolygon(coords, bbox), properties);
 
-	        coords.forEach(function (line) {
-	          lineclip.polyline(line, bbox, lines_1);
-	        });
+	    case "MultiPolygon":
+	      return multiPolygon(coords.map(function (poly) {
+	        return clipPolygon(poly, bbox);
+	      }), properties);
 
-	        if (lines_1.length === 1) {
-	          return helpers$1.lineString(lines_1[0], properties);
-	        }
-
-	        return helpers$1.multiLineString(lines_1, properties);
-
-	      case "Polygon":
-	        return helpers$1.polygon(clipPolygon(coords, bbox), properties);
-
-	      case "MultiPolygon":
-	        return helpers$1.multiPolygon(coords.map(function (poly) {
-	          return clipPolygon(poly, bbox);
-	        }), properties);
-
-	      default:
-	        throw new Error("geometry " + type + " not supported");
-	    }
+	    default:
+	      throw new Error("geometry " + type + " not supported");
 	  }
+	}
 
-	  exports["default"] = bboxClip;
+	function clipPolygon(rings, bbox) {
+	  var outRings = [];
 
-	  function clipPolygon(rings, bbox) {
-	    var outRings = [];
+	  for (var _i = 0, rings_1 = rings; _i < rings_1.length; _i++) {
+	    var ring = rings_1[_i];
+	    var clipped = polygonclip(ring, bbox);
 
-	    for (var _i = 0, rings_1 = rings; _i < rings_1.length; _i++) {
-	      var ring = rings_1[_i];
-	      var clipped = lineclip.polygon(ring, bbox);
+	    if (clipped.length > 0) {
+	      if (clipped[0][0] !== clipped[clipped.length - 1][0] || clipped[0][1] !== clipped[clipped.length - 1][1]) {
+	        clipped.push(clipped[0]);
+	      }
 
-	      if (clipped.length > 0) {
-	        if (clipped[0][0] !== clipped[clipped.length - 1][0] || clipped[0][1] !== clipped[clipped.length - 1][1]) {
-	          clipped.push(clipped[0]);
-	        }
-
-	        if (clipped.length >= 4) {
-	          outRings.push(clipped);
-	        }
+	      if (clipped.length >= 4) {
+	        outRings.push(clipped);
 	      }
 	    }
-
-	    return outRings;
 	  }
-	});
-	var turf_bboxClip = /*@__PURE__*/getDefaultExportFromCjs(bboxClip_1);
+
+	  return outRings;
+	}
 
 	var fastJsonStableStringify = function fastJsonStableStringify(data, opts) {
 	  if (!opts) opts = {};
@@ -50512,7 +49541,7 @@
 	}
 
 	var tinyqueue = TinyQueue;
-	var _default$1 = TinyQueue;
+	var _default = TinyQueue;
 
 	function TinyQueue(data, compare) {
 	  if (!(this instanceof TinyQueue)) return new TinyQueue(data, compare);
@@ -50594,10 +49623,10 @@
 	    data[pos] = item;
 	  }
 	};
-	tinyqueue["default"] = _default$1;
+	tinyqueue["default"] = _default;
 
 	var max$5 = Math.max;
-	var min$a = Math.min;
+	var min$8 = Math.min;
 	var contourId = 0;
 
 	function processPolygon(contourOrHole, isSubject, depth, Q, bbox, isExteriorRing) {
@@ -50629,8 +49658,8 @@
 
 	    var x = s1[0],
 	        y = s1[1];
-	    bbox[0] = min$a(bbox[0], x);
-	    bbox[1] = min$a(bbox[1], y);
+	    bbox[0] = min$8(bbox[0], x);
+	    bbox[1] = min$8(bbox[1], y);
 	    bbox[2] = max$5(bbox[2], x);
 	    bbox[3] = max$5(bbox[3], y); // Pushing it so the queue is sorted from left to right,
 	    // with object on the left having the highest priority.
@@ -52219,7 +51248,7 @@
 	        var isClipped = false; // Clip to tile bounds
 
 	        if (geometry.type === 'MultiPolygon') {
-	          var featureClip = turf_bboxClip(feature, tile.extent.rectangle());
+	          var featureClip = bboxClip(feature, tile.extent.rectangle());
 
 	          if (!fastDeepEqual(feature.geometry, featureClip.geometry)) {
 	            // feature = featureClip;
@@ -62249,7 +61278,7 @@
 	var INCORRECT_LENGTH = !!nativeFromCodePoint && nativeFromCodePoint.length != 1;
 
 	// `String.fromCodePoint` method
-	// https://tc39.github.io/ecma262/#sec-string.fromcodepoint
+	// https://tc39.es/ecma262/#sec-string.fromcodepoint
 	_export({ target: 'String', stat: true, forced: INCORRECT_LENGTH }, {
 	  fromCodePoint: function fromCodePoint(x) { // eslint-disable-line no-unused-vars
 	    var elements = [];
@@ -62333,7 +61362,7 @@
 	});
 
 	var rbush_1 = rbush;
-	var _default$2 = rbush;
+	var _default$1 = rbush;
 
 	function rbush(maxEntries, format) {
 	  if (!(this instanceof rbush)) return new rbush(maxEntries, format); // max entries in a node is 9 by default; min node fill is 40% for best performance
@@ -62834,9 +61863,9 @@
 	    stack.push(left, mid, mid, right);
 	  }
 	}
-	rbush_1["default"] = _default$2;
+	rbush_1["default"] = _default$1;
 
-	var lineclip_1$1 = lineclip$1;
+	var lineclip_1 = lineclip$1;
 	lineclip$1.polyline = lineclip$1;
 	lineclip$1.polygon = polygonclip$1; // Cohen-Sutherland line clippign algorithm, adapted to efficiently
 	// handle polylines rather than just segments
@@ -63015,7 +62044,7 @@
 	  if (insidePolygon(polygon, bboxCenter)) return true;
 
 	  for (var i = 0; i < polygon.length; i++) {
-	    if (lineclip_1$1(polygon[i], bbox).length > 0) return true;
+	    if (lineclip_1(polygon[i], bbox).length > 0) return true;
 	  }
 
 	  return false;
@@ -63288,7 +62317,7 @@
 	  return featureForID(query);
 	}
 
-	function feature(query, opts) {
+	function feature$1(query, opts) {
 	  if (_typeof(query) === 'object') {
 	    return featureForLoc(query, opts);
 	  }
@@ -63296,7 +62325,7 @@
 	  return featureForID(query);
 	}
 	function iso1A2Code(query, opts) {
-	  var match = feature(query, opts);
+	  var match = feature$1(query, opts);
 	  if (!match) return null;
 	  return match.properties.iso1A2 || null;
 	}
@@ -64868,7 +63897,7 @@
 	});
 
 	// `Math.sinh` method
-	// https://tc39.github.io/ecma262/#sec-math.sinh
+	// https://tc39.es/ecma262/#sec-math.sinh
 	// V8 near Chromium 38 has a problem with very small numbers
 	_export({ target: 'Math', stat: true, forced: FORCED$g }, {
 	  sinh: function sinh(x) {
@@ -83508,6 +82537,37 @@
 	  return featureList;
 	}
 
+	var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor.f;
+
+
+
+
+
+
+	var nativeStartsWith = ''.startsWith;
+	var min$9 = Math.min;
+
+	var CORRECT_IS_REGEXP_LOGIC = correctIsRegexpLogic('startsWith');
+	// https://github.com/zloirock/core-js/pull/702
+	var MDN_POLYFILL_BUG =  !CORRECT_IS_REGEXP_LOGIC && !!function () {
+	  var descriptor = getOwnPropertyDescriptor$4(String.prototype, 'startsWith');
+	  return descriptor && !descriptor.writable;
+	}();
+
+	// `String.prototype.startsWith` method
+	// https://tc39.es/ecma262/#sec-string.prototype.startswith
+	_export({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC }, {
+	  startsWith: function startsWith(searchString /* , position = 0 */) {
+	    var that = String(requireObjectCoercible(this));
+	    notARegexp(searchString);
+	    var index = toLength(min$9(arguments.length > 1 ? arguments[1] : undefined, that.length));
+	    var search = String(searchString);
+	    return nativeStartsWith
+	      ? nativeStartsWith.call(that, search, index)
+	      : that.slice(index, index + search.length) === search;
+	  }
+	});
+
 	function uiSectionEntityIssues(context) {
 	  var _entityIDs = [];
 	  var _issues = [];
@@ -87156,6 +86216,39 @@
 
 	  return utilRebind(textarea, dispatch$1, 'on');
 	}
+
+	var getOwnPropertyDescriptor$5 = objectGetOwnPropertyDescriptor.f;
+
+
+
+
+
+
+	var nativeEndsWith = ''.endsWith;
+	var min$a = Math.min;
+
+	var CORRECT_IS_REGEXP_LOGIC$1 = correctIsRegexpLogic('endsWith');
+	// https://github.com/zloirock/core-js/pull/702
+	var MDN_POLYFILL_BUG$1 =  !CORRECT_IS_REGEXP_LOGIC$1 && !!function () {
+	  var descriptor = getOwnPropertyDescriptor$5(String.prototype, 'endsWith');
+	  return descriptor && !descriptor.writable;
+	}();
+
+	// `String.prototype.endsWith` method
+	// https://tc39.es/ecma262/#sec-string.prototype.endswith
+	_export({ target: 'String', proto: true, forced: !MDN_POLYFILL_BUG$1 && !CORRECT_IS_REGEXP_LOGIC$1 }, {
+	  endsWith: function endsWith(searchString /* , endPosition = @length */) {
+	    var that = String(requireObjectCoercible(this));
+	    notARegexp(searchString);
+	    var endPosition = arguments.length > 1 ? arguments[1] : undefined;
+	    var len = toLength(that.length);
+	    var end = endPosition === undefined ? len : min$a(toLength(endPosition), len);
+	    var search = String(searchString);
+	    return nativeEndsWith
+	      ? nativeEndsWith.call(that, search, end)
+	      : that.slice(end - search.length, end) === search;
+	  }
+	});
 
 	function uiFieldWikidata(field, context) {
 	  var wikidata = services.wikidata;
@@ -91457,13 +90550,13 @@
 	var globalIsFinite = global_1.isFinite;
 
 	// `Number.isFinite` method
-	// https://tc39.github.io/ecma262/#sec-number.isfinite
+	// https://tc39.es/ecma262/#sec-number.isfinite
 	var numberIsFinite = Number.isFinite || function isFinite(it) {
 	  return typeof it == 'number' && globalIsFinite(it);
 	};
 
 	// `Number.isFinite` method
-	// https://tc39.github.io/ecma262/#sec-number.isfinite
+	// https://tc39.es/ecma262/#sec-number.isfinite
 	_export({ target: 'Number', stat: true }, { isFinite: numberIsFinite });
 
 	var RADIUS = 6378137;
@@ -91681,28 +90774,32 @@
 	};
 
 	// `Number.EPSILON` constant
-	// https://tc39.github.io/ecma262/#sec-number.epsilon
+	// https://tc39.es/ecma262/#sec-number.epsilon
 	_export({ target: 'Number', stat: true }, {
 	  EPSILON: Math.pow(2, -52)
 	});
 
 	/**
-	 * splaytree v3.0.1
+	 * splaytree v3.1.0
 	 * Fast Splay tree for Node and browser
 	 *
 	 * @author Alexander Milevski <info@w8r.name>
 	 * @license MIT
 	 * @preserve
 	 */
-	var Node$1 = function Node(key, data) {
-	  _classCallCheck(this, Node);
+	var Node$1 =
+	/** @class */
+	function () {
+	  function Node(key, data) {
+	    this.next = null;
+	    this.key = key;
+	    this.data = data;
+	    this.left = null;
+	    this.right = null;
+	  }
 
-	  this.next = null;
-	  this.key = key;
-	  this.data = data;
-	  this.left = null;
-	  this.right = null;
-	};
+	  return Node;
+	}();
 	/* follows "An implementation of top-down splaying"
 	 * by D. Sleator <sleator@cs.cmu.edu> March 1992
 	 */
@@ -91746,12 +90843,12 @@
 	      if (t.right === null) break; //if (i > t.right.key) {
 
 	      if (comparator(i, t.right.key) > 0) {
-	        var _y = t.right;
+	        var y = t.right;
 	        /* rotate left */
 
-	        t.right = _y.left;
-	        _y.left = t;
-	        t = _y;
+	        t.right = y.left;
+	        y.left = t;
+	        t = y;
 	        if (t.right === null) break;
 	      }
 
@@ -91772,7 +90869,7 @@
 	  return t;
 	}
 
-	function _insert(i, data, t, comparator) {
+	function insert(i, data, t, comparator) {
 	  var node = new Node$1(i, data);
 
 	  if (t === null) {
@@ -91796,7 +90893,7 @@
 	  return node;
 	}
 
-	function _split(key, v, comparator) {
+	function split$2(key, v, comparator) {
 	  var left = null;
 	  var right = null;
 
@@ -91838,18 +90935,20 @@
 
 	function printRow(root, prefix, isTail, out, printNode) {
 	  if (root) {
-	    out("".concat(prefix).concat(isTail ? '└── ' : '├── ').concat(printNode(root), "\n"));
+	    out("" + prefix + (isTail ? '└── ' : '├── ') + printNode(root) + "\n");
 	    var indent = prefix + (isTail ? '    ' : '│   ');
 	    if (root.left) printRow(root.left, indent, false, out, printNode);
 	    if (root.right) printRow(root.right, indent, true, out, printNode);
 	  }
 	}
 
-	var Tree = /*#__PURE__*/function () {
-	  function Tree() {
-	    var comparator = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_COMPARE$1;
-
-	    _classCallCheck(this, Tree);
+	var Tree =
+	/** @class */
+	function () {
+	  function Tree(comparator) {
+	    if (comparator === void 0) {
+	      comparator = DEFAULT_COMPARE$1;
+	    }
 
 	    this._root = null;
 	    this._size = 0;
@@ -91860,437 +90959,429 @@
 	   */
 
 
-	  _createClass(Tree, [{
-	    key: "insert",
-	    value: function insert(key, data) {
+	  Tree.prototype.insert = function (key, data) {
+	    this._size++;
+	    return this._root = insert(key, data, this._root, this._comparator);
+	  };
+	  /**
+	   * Adds a key, if it is not present in the tree
+	   */
+
+
+	  Tree.prototype.add = function (key, data) {
+	    var node = new Node$1(key, data);
+
+	    if (this._root === null) {
+	      node.left = node.right = null;
 	      this._size++;
-	      return this._root = _insert(key, data, this._root, this._comparator);
+	      this._root = node;
 	    }
-	    /**
-	     * Adds a key, if it is not present in the tree
-	     */
 
-	  }, {
-	    key: "add",
-	    value: function add(key, data) {
-	      var node = new Node$1(key, data);
-
-	      if (this._root === null) {
-	        node.left = node.right = null;
-	        this._size++;
-	        this._root = node;
+	    var comparator = this._comparator;
+	    var t = splay(key, this._root, comparator);
+	    var cmp = comparator(key, t.key);
+	    if (cmp === 0) this._root = t;else {
+	      if (cmp < 0) {
+	        node.left = t.left;
+	        node.right = t;
+	        t.left = null;
+	      } else if (cmp > 0) {
+	        node.right = t.right;
+	        node.left = t;
+	        t.right = null;
 	      }
 
-	      var comparator = this._comparator;
-	      var t = splay(key, this._root, comparator);
-	      var cmp = comparator(key, t.key);
-	      if (cmp === 0) this._root = t;else {
-	        if (cmp < 0) {
-	          node.left = t.left;
-	          node.right = t;
-	          t.left = null;
-	        } else if (cmp > 0) {
-	          node.right = t.right;
-	          node.left = t;
-	          t.right = null;
-	        }
-
-	        this._size++;
-	        this._root = node;
-	      }
-	      return this._root;
+	      this._size++;
+	      this._root = node;
 	    }
-	    /**
-	     * @param  {Key} key
-	     * @return {Node|null}
-	     */
+	    return this._root;
+	  };
+	  /**
+	   * @param  {Key} key
+	   * @return {Node|null}
+	   */
 
-	  }, {
-	    key: "remove",
-	    value: function remove(key) {
-	      this._root = this._remove(key, this._root, this._comparator);
-	    }
-	    /**
-	     * Deletes i from the tree if it's there
-	     */
 
-	  }, {
-	    key: "_remove",
-	    value: function _remove(i, t, comparator) {
-	      var x;
-	      if (t === null) return null;
-	      t = splay(i, t, comparator);
-	      var cmp = comparator(i, t.key);
+	  Tree.prototype.remove = function (key) {
+	    this._root = this._remove(key, this._root, this._comparator);
+	  };
+	  /**
+	   * Deletes i from the tree if it's there
+	   */
 
-	      if (cmp === 0) {
-	        /* found it */
-	        if (t.left === null) {
-	          x = t.right;
-	        } else {
-	          x = splay(i, t.left, comparator);
-	          x.right = t.right;
-	        }
 
-	        this._size--;
-	        return x;
+	  Tree.prototype._remove = function (i, t, comparator) {
+	    var x;
+	    if (t === null) return null;
+	    t = splay(i, t, comparator);
+	    var cmp = comparator(i, t.key);
+
+	    if (cmp === 0) {
+	      /* found it */
+	      if (t.left === null) {
+	        x = t.right;
+	      } else {
+	        x = splay(i, t.left, comparator);
+	        x.right = t.right;
 	      }
 
-	      return t;
-	      /* It wasn't there */
+	      this._size--;
+	      return x;
 	    }
-	    /**
-	     * Removes and returns the node with smallest key
-	     */
 
-	  }, {
-	    key: "pop",
-	    value: function pop() {
-	      var node = this._root;
+	    return t;
+	    /* It wasn't there */
+	  };
+	  /**
+	   * Removes and returns the node with smallest key
+	   */
 
+
+	  Tree.prototype.pop = function () {
+	    var node = this._root;
+
+	    if (node) {
+	      while (node.left) {
+	        node = node.left;
+	      }
+
+	      this._root = splay(node.key, this._root, this._comparator);
+	      this._root = this._remove(node.key, this._root, this._comparator);
+	      return {
+	        key: node.key,
+	        data: node.data
+	      };
+	    }
+
+	    return null;
+	  };
+	  /**
+	   * Find without splaying
+	   */
+
+
+	  Tree.prototype.findStatic = function (key) {
+	    var current = this._root;
+	    var compare = this._comparator;
+
+	    while (current) {
+	      var cmp = compare(key, current.key);
+	      if (cmp === 0) return current;else if (cmp < 0) current = current.left;else current = current.right;
+	    }
+
+	    return null;
+	  };
+
+	  Tree.prototype.find = function (key) {
+	    if (this._root) {
+	      this._root = splay(key, this._root, this._comparator);
+	      if (this._comparator(key, this._root.key) !== 0) return null;
+	    }
+
+	    return this._root;
+	  };
+
+	  Tree.prototype.contains = function (key) {
+	    var current = this._root;
+	    var compare = this._comparator;
+
+	    while (current) {
+	      var cmp = compare(key, current.key);
+	      if (cmp === 0) return true;else if (cmp < 0) current = current.left;else current = current.right;
+	    }
+
+	    return false;
+	  };
+
+	  Tree.prototype.forEach = function (visitor, ctx) {
+	    var current = this._root;
+	    var Q = [];
+	    /* Initialize stack s */
+
+	    var done = false;
+
+	    while (!done) {
+	      if (current !== null) {
+	        Q.push(current);
+	        current = current.left;
+	      } else {
+	        if (Q.length !== 0) {
+	          current = Q.pop();
+	          visitor.call(ctx, current);
+	          current = current.right;
+	        } else done = true;
+	      }
+	    }
+
+	    return this;
+	  };
+	  /**
+	   * Walk key range from `low` to `high`. Stops if `fn` returns a value.
+	   */
+
+
+	  Tree.prototype.range = function (low, high, fn, ctx) {
+	    var Q = [];
+	    var compare = this._comparator;
+	    var node = this._root;
+	    var cmp;
+
+	    while (Q.length !== 0 || node) {
 	      if (node) {
-	        while (node.left) {
-	          node = node.left;
+	        Q.push(node);
+	        node = node.left;
+	      } else {
+	        node = Q.pop();
+	        cmp = compare(node.key, high);
+
+	        if (cmp > 0) {
+	          break;
+	        } else if (compare(node.key, low) >= 0) {
+	          if (fn.call(ctx, node)) return this; // stop if smth is returned
 	        }
 
-	        this._root = splay(node.key, this._root, this._comparator);
-	        this._root = this._remove(node.key, this._root, this._comparator);
-	        return {
-	          key: node.key,
-	          data: node.data
-	        };
+	        node = node.right;
 	      }
-
-	      return null;
 	    }
-	    /**
-	     * Find without splaying
-	     */
 
-	  }, {
-	    key: "findStatic",
-	    value: function findStatic(key) {
-	      var current = this._root;
-	      var compare = this._comparator;
+	    return this;
+	  };
+	  /**
+	   * Returns array of keys
+	   */
 
-	      while (current) {
-	        var cmp = compare(key, current.key);
-	        if (cmp === 0) return current;else if (cmp < 0) current = current.left;else current = current.right;
+
+	  Tree.prototype.keys = function () {
+	    var keys = [];
+	    this.forEach(function (_a) {
+	      var key = _a.key;
+	      return keys.push(key);
+	    });
+	    return keys;
+	  };
+	  /**
+	   * Returns array of all the data in the nodes
+	   */
+
+
+	  Tree.prototype.values = function () {
+	    var values = [];
+	    this.forEach(function (_a) {
+	      var data = _a.data;
+	      return values.push(data);
+	    });
+	    return values;
+	  };
+
+	  Tree.prototype.min = function () {
+	    if (this._root) return this.minNode(this._root).key;
+	    return null;
+	  };
+
+	  Tree.prototype.max = function () {
+	    if (this._root) return this.maxNode(this._root).key;
+	    return null;
+	  };
+
+	  Tree.prototype.minNode = function (t) {
+	    if (t === void 0) {
+	      t = this._root;
+	    }
+
+	    if (t) while (t.left) {
+	      t = t.left;
+	    }
+	    return t;
+	  };
+
+	  Tree.prototype.maxNode = function (t) {
+	    if (t === void 0) {
+	      t = this._root;
+	    }
+
+	    if (t) while (t.right) {
+	      t = t.right;
+	    }
+	    return t;
+	  };
+	  /**
+	   * Returns node at given index
+	   */
+
+
+	  Tree.prototype.at = function (index) {
+	    var current = this._root;
+	    var done = false;
+	    var i = 0;
+	    var Q = [];
+
+	    while (!done) {
+	      if (current) {
+	        Q.push(current);
+	        current = current.left;
+	      } else {
+	        if (Q.length > 0) {
+	          current = Q.pop();
+	          if (i === index) return current;
+	          i++;
+	          current = current.right;
+	        } else done = true;
 	      }
-
-	      return null;
 	    }
-	  }, {
-	    key: "find",
-	    value: function find(key) {
-	      if (this._root) {
-	        this._root = splay(key, this._root, this._comparator);
-	        if (this._comparator(key, this._root.key) !== 0) return null;
-	      }
 
-	      return this._root;
-	    }
-	  }, {
-	    key: "contains",
-	    value: function contains(key) {
-	      var current = this._root;
-	      var compare = this._comparator;
+	    return null;
+	  };
 
-	      while (current) {
-	        var cmp = compare(key, current.key);
-	        if (cmp === 0) return true;else if (cmp < 0) current = current.left;else current = current.right;
-	      }
+	  Tree.prototype.next = function (d) {
+	    var root = this._root;
+	    var successor = null;
 
-	      return false;
-	    }
-	  }, {
-	    key: "forEach",
-	    value: function forEach(visitor, ctx) {
-	      var current = this._root;
-	      var Q = [];
-	      /* Initialize stack s */
+	    if (d.right) {
+	      successor = d.right;
 
-	      var done = false;
-
-	      while (!done) {
-	        if (current !== null) {
-	          Q.push(current);
-	          current = current.left;
-	        } else {
-	          if (Q.length !== 0) {
-	            current = Q.pop();
-	            visitor.call(ctx, current);
-	            current = current.right;
-	          } else done = true;
-	        }
-	      }
-
-	      return this;
-	    }
-	    /**
-	     * Walk key range from `low` to `high`. Stops if `fn` returns a value.
-	     */
-
-	  }, {
-	    key: "range",
-	    value: function range(low, high, fn, ctx) {
-	      var Q = [];
-	      var compare = this._comparator;
-	      var node = this._root;
-	      var cmp;
-
-	      while (Q.length !== 0 || node) {
-	        if (node) {
-	          Q.push(node);
-	          node = node.left;
-	        } else {
-	          node = Q.pop();
-	          cmp = compare(node.key, high);
-
-	          if (cmp > 0) {
-	            break;
-	          } else if (compare(node.key, low) >= 0) {
-	            if (fn.call(ctx, node)) return this; // stop if smth is returned
-	          }
-
-	          node = node.right;
-	        }
-	      }
-
-	      return this;
-	    }
-	    /**
-	     * Returns array of keys
-	     */
-
-	  }, {
-	    key: "keys",
-	    value: function keys() {
-	      var keys = [];
-	      this.forEach(function (_ref) {
-	        var key = _ref.key;
-	        return keys.push(key);
-	      });
-	      return keys;
-	    }
-	    /**
-	     * Returns array of all the data in the nodes
-	     */
-
-	  }, {
-	    key: "values",
-	    value: function values() {
-	      var values = [];
-	      this.forEach(function (_ref2) {
-	        var data = _ref2.data;
-	        return values.push(data);
-	      });
-	      return values;
-	    }
-	  }, {
-	    key: "min",
-	    value: function min() {
-	      if (this._root) return this.minNode(this._root).key;
-	      return null;
-	    }
-	  }, {
-	    key: "max",
-	    value: function max() {
-	      if (this._root) return this.maxNode(this._root).key;
-	      return null;
-	    }
-	  }, {
-	    key: "minNode",
-	    value: function minNode() {
-	      var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._root;
-	      if (t) while (t.left) {
-	        t = t.left;
-	      }
-	      return t;
-	    }
-	  }, {
-	    key: "maxNode",
-	    value: function maxNode() {
-	      var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._root;
-	      if (t) while (t.right) {
-	        t = t.right;
-	      }
-	      return t;
-	    }
-	    /**
-	     * Returns node at given index
-	     */
-
-	  }, {
-	    key: "at",
-	    value: function at(index) {
-	      var current = this._root;
-	      var done = false;
-	      var i = 0;
-	      var Q = [];
-
-	      while (!done) {
-	        if (current) {
-	          Q.push(current);
-	          current = current.left;
-	        } else {
-	          if (Q.length > 0) {
-	            current = Q.pop();
-	            if (i === index) return current;
-	            i++;
-	            current = current.right;
-	          } else done = true;
-	        }
-	      }
-
-	      return null;
-	    }
-	  }, {
-	    key: "next",
-	    value: function next(d) {
-	      var root = this._root;
-	      var successor = null;
-
-	      if (d.right) {
-	        successor = d.right;
-
-	        while (successor.left) {
-	          successor = successor.left;
-	        }
-
-	        return successor;
-	      }
-
-	      var comparator = this._comparator;
-
-	      while (root) {
-	        var cmp = comparator(d.key, root.key);
-	        if (cmp === 0) break;else if (cmp < 0) {
-	          successor = root;
-	          root = root.left;
-	        } else root = root.right;
+	      while (successor.left) {
+	        successor = successor.left;
 	      }
 
 	      return successor;
 	    }
-	  }, {
-	    key: "prev",
-	    value: function prev(d) {
-	      var root = this._root;
-	      var predecessor = null;
 
-	      if (d.left !== null) {
-	        predecessor = d.left;
+	    var comparator = this._comparator;
 
-	        while (predecessor.right) {
-	          predecessor = predecessor.right;
-	        }
+	    while (root) {
+	      var cmp = comparator(d.key, root.key);
+	      if (cmp === 0) break;else if (cmp < 0) {
+	        successor = root;
+	        root = root.left;
+	      } else root = root.right;
+	    }
 
-	        return predecessor;
-	      }
+	    return successor;
+	  };
 
-	      var comparator = this._comparator;
+	  Tree.prototype.prev = function (d) {
+	    var root = this._root;
+	    var predecessor = null;
 
-	      while (root) {
-	        var cmp = comparator(d.key, root.key);
-	        if (cmp === 0) break;else if (cmp < 0) root = root.left;else {
-	          predecessor = root;
-	          root = root.right;
-	        }
+	    if (d.left !== null) {
+	      predecessor = d.left;
+
+	      while (predecessor.right) {
+	        predecessor = predecessor.right;
 	      }
 
 	      return predecessor;
 	    }
-	  }, {
-	    key: "clear",
-	    value: function clear() {
-	      this._root = null;
-	      this._size = 0;
-	      return this;
-	    }
-	  }, {
-	    key: "toList",
-	    value: function toList() {
-	      return _toList(this._root);
-	    }
-	    /**
-	     * Bulk-load items. Both array have to be same size
-	     */
 
-	  }, {
-	    key: "load",
-	    value: function load(keys) {
-	      var values = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-	      var presort = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-	      var size = keys.length;
-	      var comparator = this._comparator; // sort if needed
+	    var comparator = this._comparator;
 
-	      if (presort) sort$1(keys, values, 0, size - 1, comparator);
-
-	      if (this._root === null) {
-	        // empty tree
-	        this._root = loadRecursive$1(keys, values, 0, size);
-	        this._size = size;
-	      } else {
-	        // that re-builds the whole tree from two in-order traversals
-	        var mergedList = mergeLists(this.toList(), createList(keys, values), comparator);
-	        size = this._size + size;
-	        this._root = sortedListToBST({
-	          head: mergedList
-	        }, 0, size);
+	    while (root) {
+	      var cmp = comparator(d.key, root.key);
+	      if (cmp === 0) break;else if (cmp < 0) root = root.left;else {
+	        predecessor = root;
+	        root = root.right;
 	      }
+	    }
 
-	      return this;
-	    }
-	  }, {
-	    key: "isEmpty",
-	    value: function isEmpty() {
-	      return this._root === null;
-	    }
-	  }, {
-	    key: "toString",
-	    value: function toString() {
-	      var printNode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (n) {
-	        return String(n.key);
-	      };
-	      var out = [];
-	      printRow(this._root, '', true, function (v) {
-	        return out.push(v);
-	      }, printNode);
-	      return out.join('');
-	    }
-	  }, {
-	    key: "update",
-	    value: function update(key, newKey, newData) {
-	      var comparator = this._comparator;
+	    return predecessor;
+	  };
 
-	      var _split2 = _split(key, this._root, comparator),
-	          left = _split2.left,
-	          right = _split2.right;
+	  Tree.prototype.clear = function () {
+	    this._root = null;
+	    this._size = 0;
+	    return this;
+	  };
 
-	      if (comparator(key, newKey) < 0) {
-	        right = _insert(newKey, newData, right, comparator);
-	      } else {
-	        left = _insert(newKey, newData, left, comparator);
-	      }
+	  Tree.prototype.toList = function () {
+	    return toList(this._root);
+	  };
+	  /**
+	   * Bulk-load items. Both array have to be same size
+	   */
 
-	      this._root = merge$4(left, right, comparator);
+
+	  Tree.prototype.load = function (keys, values, presort) {
+	    if (values === void 0) {
+	      values = [];
 	    }
-	  }, {
-	    key: "split",
-	    value: function split(key) {
-	      return _split(key, this._root, this._comparator);
+
+	    if (presort === void 0) {
+	      presort = false;
 	    }
-	  }, {
-	    key: "size",
+
+	    var size = keys.length;
+	    var comparator = this._comparator; // sort if needed
+
+	    if (presort) sort$1(keys, values, 0, size - 1, comparator);
+
+	    if (this._root === null) {
+	      // empty tree
+	      this._root = loadRecursive$1(keys, values, 0, size);
+	      this._size = size;
+	    } else {
+	      // that re-builds the whole tree from two in-order traversals
+	      var mergedList = mergeLists(this.toList(), createList(keys, values), comparator);
+	      size = this._size + size;
+	      this._root = sortedListToBST({
+	        head: mergedList
+	      }, 0, size);
+	    }
+
+	    return this;
+	  };
+
+	  Tree.prototype.isEmpty = function () {
+	    return this._root === null;
+	  };
+
+	  Object.defineProperty(Tree.prototype, "size", {
 	    get: function get() {
 	      return this._size;
-	    }
-	  }, {
-	    key: "root",
+	    },
+	    enumerable: true,
+	    configurable: true
+	  });
+	  Object.defineProperty(Tree.prototype, "root", {
 	    get: function get() {
 	      return this._root;
+	    },
+	    enumerable: true,
+	    configurable: true
+	  });
+
+	  Tree.prototype.toString = function (printNode) {
+	    if (printNode === void 0) {
+	      printNode = function printNode(n) {
+	        return String(n.key);
+	      };
 	    }
-	  }]);
+
+	    var out = [];
+	    printRow(this._root, '', true, function (v) {
+	      return out.push(v);
+	    }, printNode);
+	    return out.join('');
+	  };
+
+	  Tree.prototype.update = function (key, newKey, newData) {
+	    var comparator = this._comparator;
+
+	    var _a = split$2(key, this._root, comparator),
+	        left = _a.left,
+	        right = _a.right;
+
+	    if (comparator(key, newKey) < 0) {
+	      right = insert(newKey, newData, right, comparator);
+	    } else {
+	      left = insert(newKey, newData, left, comparator);
+	    }
+
+	    this._root = merge$4(left, right, comparator);
+	  };
+
+	  Tree.prototype.split = function (key) {
+	    return split$2(key, this._root, this._comparator);
+	  };
 
 	  return Tree;
 	}();
@@ -92323,7 +91414,7 @@
 	  return head.next;
 	}
 
-	function _toList(root) {
+	function toList(root) {
 	  var current = root;
 	  var Q = [];
 	  var done = false;
@@ -94499,7 +93590,7 @@
 
 	var jsonStringifyPrettyCompact = stringify;
 
-	var _default$3 = /*#__PURE__*/function () {
+	var _default$2 = /*#__PURE__*/function () {
 	  // constructor
 	  //
 	  // `fc`  Optional FeatureCollection of known features
@@ -94560,7 +93651,7 @@
 	    } // Replace CountryCoder world geometry to be a polygon covering the world.
 
 
-	    var world = _cloneDeep(feature('Q2'));
+	    var world = _cloneDeep(feature$1('Q2'));
 
 	    world.geometry = {
 	      type: 'Polygon',
@@ -94612,12 +93703,12 @@
 	        }
 	      } else if (typeof location === 'string' || typeof location === 'number') {
 	        // a country-coder value?
-	        var feature$1 = feature(location);
+	        var feature = feature$1(location);
 
-	        if (feature$1) {
+	        if (feature) {
 	          // Use wikidata QID as the identifier, since that seems to be the one
 	          // property that everything in CountryCoder is guaranteed to have.
-	          var _id2 = feature$1.properties.wikidata;
+	          var _id2 = feature.properties.wikidata;
 	          return {
 	            type: 'countrycoder',
 	            location: location,
@@ -94667,7 +93758,7 @@
 	        var PRECISION = 3;
 	        var area = Math.PI * RADIUS * RADIUS / 1e6; // m² to km²
 
-	        var feature$1 = this._cache[id] = geojsonPrecision({
+	        var feature = this._cache[id] = geojsonPrecision({
 	          type: 'Feature',
 	          id: id,
 	          properties: {
@@ -94677,10 +93768,10 @@
 	          geometry: circleToPolygon(location, RADIUS, EDGES)
 	        }, PRECISION);
 	        return Object.assign(valid, {
-	          feature: feature$1
+	          feature: feature
 	        }); // a .geojson filename?
 	      } else if (valid.type === 'geojson') ; else if (valid.type === 'countrycoder') {
-	        var _feature = _cloneDeep(feature(id));
+	        var _feature = _cloneDeep(feature$1(id));
 
 	        var props = _feature.properties; // -> This block of code is weird and requires some explanation. <-
 	        // CountryCoder includes higher level features which are made up of members.
@@ -94956,7 +94047,7 @@
 	    return Promise.all([data.get('oci_resources'), data.get('oci_features')]).then(function (vals) {
 	      if (_oci) return _oci;
 	      var ociResources = vals[0].resources;
-	      var loco = new _default$3(vals[1]);
+	      var loco = new _default$2(vals[1]);
 	      var ociFeatures = {};
 	      Object.values(ociResources).forEach(function (resource) {
 	        var feature = loco.resolveLocationSet(resource.locationSet).feature;

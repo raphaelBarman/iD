@@ -3785,6 +3785,9 @@
                 "generator/type": {
                     "label": "Type"
                 },
+                "geom_checked": {
+                    "label": "Geometry checked?"
+                },
                 "geyser/height": {
                     "label": "Eruption Height"
                 },
@@ -4355,6 +4358,29 @@
                 "par": {
                     "label": "Par",
                     "placeholder": "3, 4, 5..."
+                },
+                "parcel_num_checked": {
+                    "label": "Parcel number (written) checked?"
+                },
+                "parcel_num_link_checked": {
+                    "label": "Parcel number link checked?"
+                },
+                "parcel_num_link": {
+                    "label": "Parcel number link"
+                },
+                "parcel_num": {
+                    "label": "Parcel number (written)"
+                },
+                "parcel_type": {
+                    "label": "Parcel type",
+                    "options": {
+                        "building": "Building",
+                        "courtyard": "Courtyard",
+                        "street": "Street",
+                        "sottoportico": "Sottoportico",
+                        "water": "Water",
+                        "background": "Background"
+                    }
                 },
                 "park_ride": {
                     "label": "Park and Ride",
@@ -5216,6 +5242,9 @@
                 "tunnel": {
                     "label": "Type",
                     "placeholder": "Default"
+                },
+                "type_checked": {
+                    "label": "Parcel type checked?"
                 },
                 "usage_rail": {
                     "label": "Usage Type",
@@ -7950,6 +7979,10 @@
                 "landuse/orchard": {
                     "name": "Orchard",
                     "terms": "fruit"
+                },
+                "landuse/parcel": {
+                    "name": "Parcel",
+                    "terms": ""
                 },
                 "landuse/plant_nursery": {
                     "name": "Plant Nursery",
@@ -11029,6 +11062,13 @@
                 },
                 "description": "Orthophotos for urban areas of the municipality of Kalmar 2018",
                 "name": "Kalmar Urban Orthophoto 2018"
+            },
+            "kalmar-orto-2020": {
+                "attribution": {
+                    "text": "© Kalmar municipality"
+                },
+                "description": "Orthophotos for urban areas of the municipality of Kalmar 2020",
+                "name": "Kalmar Urban Orthophoto 2020"
             },
             "kelkkareitit": {
                 "attribution": {
